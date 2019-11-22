@@ -163,8 +163,14 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `username` varchar(45) NOT NULL,
   `password` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `stud_id` varchar(10) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  PRIMARY KEY (`username`,`stud_id`,`type_id`),
+  KEY `stud_id_idx` (`stud_id`),
+  KEY `type_id_idx` (`type_id`),
+  CONSTRAINT `stud_id` FOREIGN KEY (`stud_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `type_id` FOREIGN KEY (`type_id`) REFERENCES `user_type` (`type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +193,7 @@ CREATE TABLE `user_type` (
   `type_id` int(11) NOT NULL,
   `type_desc` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`type_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,4 +214,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-22 22:36:47
+-- Dump completed on 2019-11-22 22:40:09
