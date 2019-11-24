@@ -7,8 +7,11 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
   </head>
   <body>
+    <h1 style="color: red">Note: No joined tables yet.</h1>
+    <h1>User Section</h1>
     <form class="" action="inc/login.inc.php" method="post">
       <ul>
         <li>
@@ -24,7 +27,8 @@
         </li>
       </ul>
     </form>
-
+<hr>
+<h1>Student Section</h1>
     <form class="" action="inc/insert.inc.php" method="post">
       <ul>
         <li>
@@ -57,9 +61,74 @@
       </ul>
     </form>
 
+    <table id="students" class="display">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Middle Name</th>
+          <th>Address</th>
+          <th>Contact Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+          $sql = "SELECT * FROM sbo.student";
+          $result = mysqli_query($conn, $sql);
+          $resultCheck = mysqli_num_rows($result);
+
+          if ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo '
+                <tr>
+                  <td>'. $row['student_id'].'</td>
+                  <td>'. $row['last_name'].'</td>
+                  <td>'. $row['first_name'].'</td>
+                  <td>'. $row['middle_name'].'</td>
+                  <td>'. $row['address'].'</td>
+                  <td>'. $row['contact_num'].'</td>
+                </tr>';
+            }
+          }
+        ?>
+      </tbody>
+
+    </table>
+
+<hr>
+<h1>Emergency Contact Section</h1>
+    <form class="" action="inc/insert.inc.php" method="post">
+      <ul>
+        <li>
+          <label for="">Last Name</label>
+          <input type="text" name="em-lname">
+        </li>
+        <li>
+          <label for="">First Name</label>
+          <input type="text" name="em-fname">
+        </li>
+        <li>
+          <label for="">Middle Name</label>
+          <input type="text" name="em-mname">
+        </li>
+        <li>
+          <label for="">Contact Number</label>
+          <input type="text" name="em-num">
+        </li>
+        <li>
+          <label for="">Address</label>
+          <input type="text" name="em-address">
+        </li>
+        <li>
+          <button type="submit" name="em-save">Save Contact</button>
+        </li>
+      </ul>
+    </form>
+
     <table>
       <tr>
-        <th>Student ID</th>
+        <th>Emergency Contact ID</th>
         <th>Last Name</th>
         <th>First Name</th>
         <th>Middle Name</th>
@@ -67,7 +136,7 @@
         <th>Contact Number</th>
       </tr>
       <?php
-        $sql = "SELECT * FROM sbo.student";
+        $sql = "SELECT * FROM sbo.emergency";
         $result = mysqli_query($conn, $sql);
         $resultCheck = mysqli_num_rows($result);
 
@@ -75,7 +144,7 @@
           while ($row = mysqli_fetch_assoc($result)) {
             echo '
               <tr>
-                <td>'. $row['student_id'].'</td>
+                <td>'. $row['em_id'].'</td>
                 <td>'. $row['last_name'].'</td>
                 <td>'. $row['first_name'].'</td>
                 <td>'. $row['middle_name'].'</td>
@@ -87,6 +156,8 @@
       ?>
     </table>
 
+    <hr>
+
     <form class="" action="inc/insert.inc.php" method="post">
       <ul>
         <li>
@@ -95,11 +166,11 @@
         </li>
         <li>
           <label for="">Start</label>
-          <input type="datetime-local" name="start">
+          <input type="date" name="start">
         </li>
         <li>
           <label for="">End</label>
-          <input type="datetime-local" name="end">
+          <input type="date" name="end">
         </li>
         <li>
           <label for="">Description</label>
@@ -124,10 +195,19 @@
       <?php
         //variable slightly varied due to query being on the same page
         //to be improved later
-        $sql1 = "SELECT * FROM sbo.event;";
-        $result1 = mysqli_query($conn, $sql1);
-        $resultCheck1 = mysqli_num_rows($result1);
+        $sql = "SELECT * FROM sbo.event;";
+        $result = mysqli_query($conn, $sql);
+        $resultCheck = mysqli_num_rows($result);
       ?>
     </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready( function () {
+          $('#students').DataTable();
+        } );
+    </script>
+
   </body>
 </html>
