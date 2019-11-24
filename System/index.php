@@ -65,9 +65,7 @@
       <thead>
         <tr>
           <th>Student ID</th>
-          <th>Last Name</th>
-          <th>First Name</th>
-          <th>Middle Name</th>
+          <th>Name</th>
           <th>Address</th>
           <th>Contact Number</th>
         </tr>
@@ -83,9 +81,7 @@
               echo '
                 <tr>
                   <td>'. $row['student_id'].'</td>
-                  <td>'. $row['last_name'].'</td>
-                  <td>'. $row['first_name'].'</td>
-                  <td>'. $row['middle_name'].'</td>
+                  <td>'. $row['last_name']. ', '. $row['first_name']. ' '. $row['middle_name'] . '</td>
                   <td>'. $row['address'].'</td>
                   <td>'. $row['contact_num'].'</td>
                 </tr>';
@@ -126,34 +122,35 @@
       </ul>
     </form>
 
-    <table>
-      <tr>
-        <th>Emergency Contact ID</th>
-        <th>Last Name</th>
-        <th>First Name</th>
-        <th>Middle Name</th>
-        <th>Address</th>
-        <th>Contact Number</th>
-      </tr>
-      <?php
-        $sql = "SELECT * FROM sbo.emergency";
-        $result = mysqli_query($conn, $sql);
-        $resultCheck = mysqli_num_rows($result);
+    <table id="emergency" class="display">
+      <thead>
+        <tr>
+          <th>Emergency Contact ID</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Contact Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+          $sql = "SELECT * FROM sbo.emergency";
+          $result = mysqli_query($conn, $sql);
+          $resultCheck = mysqli_num_rows($result);
 
-        if ($resultCheck > 0) {
-          while ($row = mysqli_fetch_assoc($result)) {
-            echo '
-              <tr>
-                <td>'. $row['em_id'].'</td>
-                <td>'. $row['last_name'].'</td>
-                <td>'. $row['first_name'].'</td>
-                <td>'. $row['middle_name'].'</td>
-                <td>'. $row['address'].'</td>
-                <td>'. $row['contact_num'].'</td>
-              </tr>';
+          if ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo '
+                <tr>
+                  <td>'. $row['em_id'].'</td>
+                  <td>'. $row['last_name']. ', '. $row['first_name']. ' '. $row['middle_name'] . '</td>
+                  <td>'. $row['address'].'</td>
+                  <td>'. $row['contact_num'].'</td>
+                </tr>';
+            }
           }
-        }
-      ?>
+        ?>
+      </tbody>
+
     </table>
 
     <hr>
@@ -182,23 +179,41 @@
       </ul>
     </form>
 
-    <table>
-      <tr>
-        <th>Event ID</th>
-        <th>Title</th>
-        <th>Start Period</th>
-        <th>End Period</th>
-        <th>Date Created</th>
-        <th>Created by</th>
-      </tr>
+    <table id="event" class="display">
+      <thead>
+        <tr>
+          <th>Event ID</th>
+          <th>Title</th>
+          <th>Start Period</th>
+          <th>End Period</th>
+          <th>Date Created</th>
+          <th>Created by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+          $sql = "SELECT * FROM sbo.event;";
+          $result = mysqli_query($conn, $sql);
+          $resultCheck = mysqli_num_rows($result);
 
-      <?php
-        //variable slightly varied due to query being on the same page
-        //to be improved later
-        $sql = "SELECT * FROM sbo.event;";
-        $result = mysqli_query($conn, $sql);
-        $resultCheck = mysqli_num_rows($result);
-      ?>
+          if ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo '
+                <tr>
+                  <td>'. $row['event_id'].'</td>
+                  <td>'. $row['title'].'</td>
+                  <td>'. $row['create_date'].'</td>
+                  <td>'. $row['description'].'</td>
+                  <td>'. $row['start_date'].'</td>
+                  <td>'. $row['end_date'].'</td>
+                </tr>';
+            }
+          }
+        ?>
+      </tbody>
+
+
+
     </table>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -206,6 +221,14 @@
     <script>
         $(document).ready( function () {
           $('#students').DataTable();
+        } );
+
+        $(document).ready( function () {
+          $('#event').DataTable();
+        } );
+
+        $(document).ready( function () {
+          $('#emergency').DataTable();
         } );
     </script>
 

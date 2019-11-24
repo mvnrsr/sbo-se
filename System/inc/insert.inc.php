@@ -44,11 +44,13 @@ session_start();
   //insert event
   if (isset($_POST['add-event'])) {
     $title = $_POST['title'];
-    $start = date('Y-m-d', strtotime(str_replace('-', '/', $_POST['start'])));
-    $end = date('Y-m-d',  strtotime(str_replace('-', '/', $_POST['end'])));
+    //$start = date('Y-m-d', strtotime(str_replace('-', '/', $_POST['start'])));
+    //$end = date('Y-m-d',  strtotime(str_replace('-', '/', $_POST['end'])));
+    $start = $_POST['start'];
+    $end = $_POST['end'];
     $desc = $_POST['desc'];
 
-    $sql = "INSERT INTO sbo.event(title, create_date, desc, start_date, end_date) VALUES('$title', '$today', '$desc', '$start', '$end')";
+    $sql = "INSERT INTO sbo.event(title, create_date, description, start_date, end_date) VALUES('$title', '$today', '$desc', '$start', '$end')";
 
     if (!mysqli_query($conn, $sql)) {
       echo (mysqli_error($conn));
