@@ -30,7 +30,7 @@ CREATE TABLE `emergency` (
   `contact_num` varchar(45) DEFAULT NULL,
   `address` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`em_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `emergency` (
 
 LOCK TABLES `emergency` WRITE;
 /*!40000 ALTER TABLE `emergency` DISABLE KEYS */;
+INSERT INTO `emergency` VALUES (1,'Rosario','Delia','Alvar','09293460538','400 Cantingan, Quinavite, Bauang, La Union'),(2,'Rosario','Daniel','Salomon','09983136591','400 Cantingan, Quinavite, Bauang, La Union'),(3,'Francisco','Firmo Rico','','09277054399','San Fernando City');
 /*!40000 ALTER TABLE `emergency` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,17 +51,14 @@ DROP TABLE IF EXISTS `event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event` (
-  `event_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `desc` varchar(5000) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
-  `officer_id` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`event_id`),
-  KEY `ev_officer_idx` (`officer_id`),
-  CONSTRAINT `ev_officer` FOREIGN KEY (`officer_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`event_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,6 +67,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
+INSERT INTO `event` VALUES (2,'test','2019-11-24','Lorem ipsum dolor sit amet, consectetur adipiscing elit.','2019-10-04','2019-10-04');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,7 +95,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES ('171-0192-2','Rosario','Mivien','alvar','400 Cantingan, Quinavite, Bauang, La Union','09219698035');
+INSERT INTO `student` VALUES ('171-0115-2','Francisco','Rica','Oafericua','San Fernando City','09121117780'),('171-0192-2','Rosario','Mivien','alvar','400 Cantingan, Quinavite, Bauang, La Union','09219698035');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,9 +140,9 @@ CREATE TABLE `student_events` (
   `stud_id` varchar(10) NOT NULL,
   `officer_id` varchar(10) NOT NULL,
   PRIMARY KEY (`sev_id`,`event_id`,`stud_id`,`officer_id`),
-  KEY `sev_event_idx` (`event_id`),
   KEY `sev_stud_idx` (`stud_id`),
   KEY `sev_officer_idx` (`officer_id`),
+  KEY `sev_event_idx` (`event_id`),
   CONSTRAINT `sev_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `sev_officer` FOREIGN KEY (`officer_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `sev_stud` FOREIGN KEY (`stud_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -220,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-24 13:09:38
+-- Dump completed on 2019-11-24 17:27:54
