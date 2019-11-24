@@ -28,6 +28,17 @@
       </ul>
     </form>
 <hr>
+
+  <h1>Student Registration</h1>
+  <form class="" action="" method="post">
+    <ul>
+      <li>
+        <label for=""></label>
+      </li>
+    </ul>
+  </form>
+
+<hr>
 <h1>Student Section</h1>
     <form class="" action="inc/insert.inc.php" method="post">
       <ul>
@@ -184,10 +195,10 @@
         <tr>
           <th>Event ID</th>
           <th>Title</th>
-          <th>Start Period</th>
-          <th>End Period</th>
           <th>Date Created</th>
-          <th>Created by</th>
+          <th>Description</th>
+          <th>Start Date</th>
+          <th>End Date</th>
         </tr>
       </thead>
       <tbody>
