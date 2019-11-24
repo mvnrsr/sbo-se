@@ -52,9 +52,14 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   `event_id` int(11) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `desc` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`event_id`)
+  `create_date` date DEFAULT NULL,
+  `desc` varchar(5000) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `officer_id` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`event_id`),
+  KEY `ev_officer_idx` (`officer_id`),
+  CONSTRAINT `ev_officer` FOREIGN KEY (`officer_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,6 +96,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
+INSERT INTO `student` VALUES ('171-0192-2','Rosario','Mivien','alvar','400 Cantingan, Quinavite, Bauang, La Union','09219698035');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,4 +220,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-22 22:40:09
+-- Dump completed on 2019-11-24 13:09:38

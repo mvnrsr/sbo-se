@@ -1,6 +1,7 @@
 <?php
 session_start();
   require 'db.inc.php';
+  $today = date('d-M-Y h:i A');
 
   //insert student
   if (isset($_POST['saveStud'])) {
@@ -20,4 +21,14 @@ session_start();
       header("Location: ../index.php?save=error");
       exit();
     }
+  }
+
+  //insert event
+  if (isset($_POST['add-event'])) {
+    $title = $_POST['title'];
+    $start = date($_POST['start']);
+    $end = date($_POST['end']);
+    $desc = $_POST['desc'];
+
+
   }
