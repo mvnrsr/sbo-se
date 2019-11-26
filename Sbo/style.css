@@ -1,0 +1,130 @@
+*{
+	padding: 0px;
+	margin: 0px;
+}
+body{
+}
+
+header{
+	background: blue;
+	height: 85px;
+	border-bottom: 1px solid #133783;
+}
+.header-block{
+	width: 100%;
+	margin: 0 auto ;
+    padding-top: 20px;
+}
+
+.logo{
+	width: 50%;
+	float: left;
+	
+}
+.sbo-login{
+	width: 50%;
+	float: left;
+	
+}
+
+.logo img{
+ padding-top:  10px;
+ padding-bottom:  20px;
+ 
+}
+.header-block label{
+	color: #fff;
+}
+.Email{
+	float: left;
+	
+}
+.Email label{
+padding-bottom: 10px;	
+}
+.Email input[type="text"]{
+	height: 20px;
+	width: 150px;
+	border:1px solid #1d2a5b;
+}
+.password{
+	float: left;
+	margin-left: 15px;
+}
+.password label{
+padding-bottom: 10px;	
+}
+.password input[type="password"]{
+	height: 20px;
+	width:150px;
+		border:1px solid #1d2a5b;
+}
+.password a{
+	color:  # 8fb1d8;
+	text-decoration: none;
+}
+.login-button{
+ float: left;
+ margin-top:  19px; 
+ margin-left: 20px;
+}	
+
+.login-button input[type="submit"]{
+	background: #4267b2;
+	border: 1px solid #29487d;
+	color: #fff;
+	height: 20px;
+	width:50px;
+}
+
+.clearfix{
+	clear: both;
+	
+}
+.content-block{
+	width: 100% ;
+	margin: 0 auto ;	
+}
+.sbo-connect{
+	margin-top: 50px;
+	float: left;
+	width: 50%;
+	
+}
+.sbo-connect p{
+color: 0e385f;
+font-size: 20px;
+font-weight: bold;
+	
+}
+.sbo-connect img{
+margin-top: 10px;	
+}
+.create-account{
+	float: left;
+	width: 50%;
+}
+.content-container{
+	background: linear-gradient (#fff,#d9ddeb)
+}
+.create-account h2{
+	font-size: 40px;
+}
+.create-account .free{
+	font-size: 19px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.account input [type='text']{
+	height: 45px;
+	margin-bottom: 15px;
+	border-radius: 5px;
+	padding: 10px;
+}
+.account input [type='password']{
+	height: 36px;
+	margin-bottom: 15px;
+	border-radius: 5px;
+	padding: 10px;
+}

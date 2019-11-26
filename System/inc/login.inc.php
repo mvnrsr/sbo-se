@@ -1,0 +1,59 @@
+<?php
+if (isset($_POST['login'])) {
+  require 'db.inc.php';
+
+  $username = $_POST['username'];
+  $password = $_POST['pw'];
+
+  if (empty($username) || empty($password)) {
+    header("Location: ../login.php?error=emptyfields&username=".$username);
+    exit();
+  }
+  else {
+    $sql = "SELECT * FROM sbo.user WHERE user_name=?;";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+      header("Location: ../login.php?error=sqlerror");
+      exit();
+    }
+    else {
+      mysqli_stmt_bind_param($stmt, "s", $username);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+      if ($row = mysqli_fetch_assoc($result)) {
+        $pwdCheck = password_verify($password, $row['user_pw']);
+        if ($pwdCheck == false) {
+          header("Location: ../login.php?error=wrongpwd");
+          session_start();
+          $_SESSION['invalid-pw'] = TRUE;
+          exit();
+        }
+        else if ($pwdCheck == true) {
+          session_start();
+          //info
+          $_SESSION['uid'] = $row['user_id'];
+          $_SESSION['uname'] = $row['user_name'];
+          $_SESSION['pw'] = $row['user_pw'];
+          $_SESSION['fname'] = $row['f_name'];
+          $_SESSION['lname'] = $row['l_name'];
+          $_SESSION['type'] = $row['privilege_id'];
+          $_SESSION['logged-in'] = TRUE;
+
+          header("Location: ../index.php?login=success&id=".$id);
+          exit();
+        }
+      }
+      else {
+        header("Location: ../index.php?login=wronguidpwd");
+        exit();
+      }
+    }
+  }
+  mysqli_stmt_close($stmt);
+  mysqli_close($conn);
+}
+else {
+  header("Location: index.php");
+  exit();
+}
+ ?>
