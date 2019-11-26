@@ -29,17 +29,19 @@
     </form>
 <hr>
 
-  <h1>Student Registration</h1>
-  <form class="" action="" method="post">
-    <ul>
-      <li>
-        <label for=""></label>
-      </li>
-    </ul>
-  </form>
+
 
 <hr>
-<h1>Student Section</h1>
+<h1>Student Registration</h1>
+<form class="" action="" method="post">
+  <ul>
+    <li>
+      <label for=""></label>
+    </li>
+  </ul>
+</form>
+
+<h1>Add Student Information</h1>
     <form class="" action="inc/insert.inc.php" method="post">
       <ul>
         <li>
