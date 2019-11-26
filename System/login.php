@@ -8,7 +8,7 @@
   <body>
     <div class="container">
       <div class="">
-        <form action="inc/login.php" method="post">
+        <form action="inc/login.inc.php" method="post">
           <h1>Login</h1>
             <input type="text" name="username" placeholder="Username" >
             <input type="password" name="pw" placeholder="Password">

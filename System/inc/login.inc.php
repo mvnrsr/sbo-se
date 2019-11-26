@@ -10,7 +10,7 @@ if (isset($_POST['login'])) {
     exit();
   }
   else {
-    $sql = "SELECT * FROM sbo.user WHERE user_name=?;";
+    $sql = "SELECT * FROM sbo.user WHERE username=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
       header("Location: ../login.php?error=sqlerror");
@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
       mysqli_stmt_execute($stmt);
       $result = mysqli_stmt_get_result($stmt);
       if ($row = mysqli_fetch_assoc($result)) {
-        $pwdCheck = password_verify($password, $row['user_pw']);
+        $pwdCheck = password_verify($password, $row['password']);
         if ($pwdCheck == false) {
           header("Location: ../login.php?error=wrongpwd");
           session_start();
@@ -31,12 +31,8 @@ if (isset($_POST['login'])) {
         else if ($pwdCheck == true) {
           session_start();
           //info
-          $_SESSION['uid'] = $row['user_id'];
-          $_SESSION['uname'] = $row['user_name'];
-          $_SESSION['pw'] = $row['user_pw'];
-          $_SESSION['fname'] = $row['f_name'];
-          $_SESSION['lname'] = $row['l_name'];
-          $_SESSION['type'] = $row['privilege_id'];
+          $_SESSION['uid'] = $row['stud_id'];
+          $_SESSION['uname'] = $row['username'];
           $_SESSION['logged-in'] = TRUE;
 
           header("Location: ../index.php?login=success&id=".$id);
@@ -44,7 +40,7 @@ if (isset($_POST['login'])) {
         }
       }
       else {
-        header("Location: ../index.php?login=wronguidpwd");
+        header("Location: ../login.php?login=wronguidpwd");
         exit();
       }
     }
@@ -53,7 +49,7 @@ if (isset($_POST['login'])) {
   mysqli_close($conn);
 }
 else {
-  header("Location: index.php");
+  header("Location: login.php");
   exit();
 }
  ?>
