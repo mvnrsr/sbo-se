@@ -167,7 +167,7 @@
     </table>
 
     <hr>
-
+    <h1>Event Section</h1>
     <form class="" action="inc/insert.inc.php" method="post">
       <ul>
         <li>
@@ -195,12 +195,10 @@
     <table id="event" class="display">
       <thead>
         <tr>
-          <th>Event ID</th>
           <th>Title</th>
-          <th>Date Created</th>
+          <th>Date of Event</th>
           <th>Description</th>
-          <th>Start Date</th>
-          <th>End Date</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -211,14 +209,14 @@
 
           if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
+              $dateEvent = date('M d Y', strtotime($row['start_date']));
               echo '
                 <tr>
-                  <td>'. $row['event_id'].'</td>
-                  <td>'. $row['title'].'</td>
-                  <td>'. $row['create_date'].'</td>
+                  <td><a href="eventdetails.php?id='. $row['event_id'] . '">'. $row['title'].'</a></td>
+                  <td>'. $dateEvent .'</td>
                   <td>'. $row['description'].'</td>
-                  <td>'. $row['start_date'].'</td>
-                  <td>'. $row['end_date'].'</td>
+                  <td><a href="eventdetails.php?id='.
+                    $row['event_id'] .'">Edit</a></td>
                 </tr>';
             }
           }
