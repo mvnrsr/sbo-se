@@ -19,6 +19,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Hello, User</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="inc/logout.inc.php">Logout</a>
+        </li>
       </ul>
     </nav>
 
