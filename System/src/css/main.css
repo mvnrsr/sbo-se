@@ -13,6 +13,27 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+.main-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.col {
+  background-color: #FAFAFA;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  padding: 1rem;
+}
+
+.side-nav {
+  width: 10%;
+}
+
+.side-nav ul {
+  list-style-type: none;
+}
+
 .container {
   display: flex;
   flex-direction: column;
