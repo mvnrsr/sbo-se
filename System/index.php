@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="src/css/main.css" />
   </head>
   <body>
     <h1 style="color: red">Note: No joined tables yet.</h1>
