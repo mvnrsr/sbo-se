@@ -1,0 +1,94 @@
+td > label{
+		color: #000;
+    	font-family: arial;
+    	font-size: 18px;
+	}
+	.event{
+		width: 850px;
+		margin: auto;
+		margin-top: 60px;
+	    padding: 30px 0;
+	    box-shadow: 0 0 9px 0px #9b8e8e;
+		background: rgba(0, 32, 49, 0.3);
+	}
+	td > input{
+		color: #9b7183;
+		border-style: unset;
+		height: 25px;
+		box-shadow: 0 0 2px black;
+		padding: 0 0 0 10px;
+			}
+			
+	tr{
+		margin: 2px;
+	}
+	.add-event{
+	    width: 150px;
+	    height: 35px;
+	    border-radius: 10px;
+	    color: black;
+	    opacity: .9;
+		background-color: rgb(34,139,34);
+	}
+
+	.add-event:hover{
+		opacity: 1;
+		width: 150px;
+	    height: 35px;
+	    border-radius: 10px;
+	    color: white;
+    	box-shadow:  #00FF00;
+	}
+
+	.display{
+		width: 80%;
+		margin: auto;
+
+	}
+
+	.display >tbody>tr>td{
+		color: #9b7183;
+		text-align: center;
+		border-style: unset;
+		height: 25px;
+		box-shadow: 0 0 2px black;
+		padding: 0 0 0 10px;
+	}
+
+	.display >thead>tr>td{
+	    padding: 10px;
+	}
+	
+
+	.display > thead>tr{
+		background: rgba(0, 32, 49, 0.3);
+		font-family: arial;
+		font-weight: 300;
+		color: #fff;
+	}
+	.display > thead>tr>td{
+	text-align: center;
+	}
+	h1{
+		font-family: arial;
+		color: #000;
+		margin: 0;
+		font-size: 35px;
+	}
+	
+	button.edit{
+		height: 35px;
+    	border-radius: 10px;
+    	color: black;
+	}
+	
+
+	.edit{
+		background-color: #3b3290;
+	}
+	
+	.edit:hover{
+		opacity: 1;
+	    color: white;
+    	box-shadow:  #00FF00;
+	}
