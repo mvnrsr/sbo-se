@@ -1,14 +1,3 @@
-<?php
-  session_start();
-  require 'inc/db.inc.php';
-?>
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
     <ul>
         <?php
           $sql = "SELECT * FROM sbo.event";
@@ -27,5 +16,3 @@
 
         ?>
     </ul>
-  </body>
-</html>
