@@ -68,6 +68,11 @@ session_start();
       header("Location: ../index.php?saveEvent=error");
       exit();
     }
+  } //insert event
 
-
+  //test
+  if (isset($_POST['test'])) {
+    $title = $_POST['title'];
+    echo $title;
+    echo "\n";
   }

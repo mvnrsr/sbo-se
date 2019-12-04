@@ -6,6 +6,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
     <link rel="stylesheet" href="src/css/master.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
   <body>
     <div class="main-wrapper">
@@ -15,6 +16,42 @@
         ?>
       </div>
       <div class="content-wrapper">
+        <!--w3 modal -->
+        <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Add New Event</button>
+        <div id="id01" class="w3-modal">
+          <div class="w3-modal-content w3-card-4">
+            <header class="w3-container w3-teal">
+              <span onclick="document.getElementById('id01').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <h2>Add New Event</h2>
+            </header>
+            <div class="w3-container">
+              <form class="w3-container" action="inc/insert.inc.php" method="post">
+                <p>
+                  <label>Event Title</label></p>
+                  <input type="text" class="w3-input" name="title">
+
+                </p>
+                <p>
+                  <label>Description</label></p>
+                  <textarea class="w3-input" name="desc"></textarea>
+                </p>
+                <p>
+                  <label>Description</label></p>
+                  <input type="date" class="w3-input" name="date">
+                </p>
+                <p>
+                  <button class="w3-btn" type="submit" name="test">Save</button>
+                </p>
+              </form>
+            </div>
+            <footer class="w3-container w3-teal">
+
+            </footer>
+          </div>
+        </div>
+
+        <!-- dataTables -->
         <table id="event" class="display">
           <thead>
             <tr>
@@ -55,8 +92,9 @@
             ?>
           </tbody>
         </table>
-      </div>
-    </div>
+
+      </div> <!-- end content wrapper -->
+    </div> <!-- End main wrapper -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
@@ -64,6 +102,7 @@
       $(document).ready( function () {
         $('#event').DataTable();
       } );
+
     </script>
   </body>
 </html>
