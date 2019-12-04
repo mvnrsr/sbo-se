@@ -17,8 +17,9 @@ session_start();
 
     if (!mysqli_query($conn, $sql)) {
       echo (mysqli_error($conn));
+      header("Location: ../students.php?registration=error");
     } else {
-      header("Location: ../index.php?save=error");
+      header("Location: ../index.php?registration=successful");
       exit();
     }
   }
@@ -71,8 +72,25 @@ session_start();
   } //insert event
 
   //test
-  if (isset($_POST['test'])) {
-    $title = $_POST['title'];
-    echo $title;
-    echo "\n";
+  if (isset($_POST['add-attendance'])) {
+    $date = $_POST['date'];
+    $type = $_POST['type'];
+
+    $sql = "INSERT INTO sbo.attendance(date, type) VALUES('$date', '$type');";
+
+    if (!mysqli_query($conn, $sql)) {
+
+    } else {
+      $sql2 = "SELECT * FROM sbo.student;";
+      $list = mysqli_query($conn, $sql2);
+      $listCheck = mysqli_num_rows($list);
+
+      if ($listCheck > 0) {
+        while ($row = mysqli_fetch_assoc($list)) {
+          $student_list[$row['student_id']] = $row;
+        }
+      }
+
+    }
+
   }

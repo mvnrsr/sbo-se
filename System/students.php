@@ -16,33 +16,45 @@
         ?>
       </div>
       <div class="content-wrapper">
-        <h1>Events List</h1>
+        <h1>Students List</h1>
         <!--w3 modal -->
-        <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black float-right">Add New Event</button>
+        <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black float-right">Register New Student</button>
         <div id="id01" class="w3-modal">
           <div class="w3-modal-content w3-card-4">
             <header class="w3-container w3-teal">
               <span onclick="document.getElementById('id01').style.display='none'"
               class="w3-button w3-display-topright">&times;</span>
-              <h2>Add New Event</h2>
+              <h2>New Student Registration</h2>
             </header>
             <div class="w3-container">
               <form class="w3-container" action="inc/insert.inc.php" method="post">
                 <p>
-                  <label>Event Title</label></p>
-                  <input type="text" class="w3-input" name="title">
+                  <label>Student ID</label></p>
+                  <input type="text" class="w3-input" name="studID" required>
 
                 </p>
                 <p>
-                  <label>Description</label></p>
-                  <textarea class="w3-input" name="desc"></textarea>
+                  <label>Last Name</label></p>
+                  <input type="text" class="w3-input" name="lname" required>
                 </p>
                 <p>
-                  <label>Description</label></p>
-                  <input type="date" class="w3-input" name="date">
+                  <label>First Name</label></p>
+                  <input type="text" class="w3-input" name="fname" required>
                 </p>
                 <p>
-                  <button class="w3-btn" type="submit" name="test">Save</button>
+                  <label>Middle Name</label></p>
+                  <input type="text" class="w3-input" name="mname" required>
+                </p>
+                <p>
+                  <label>Address</label></p>
+                  <input type="text" class="w3-input" name="address" required>
+                </p>
+                <p>
+                  <label>Contact Number</label></p>
+                  <input type="text" class="w3-input" name="num" required>
+                </p>
+                <p>
+                  <button class="w3-btn" type="submit" name="saveStud">Save</button>
                 </p>
               </form>
             </div>
@@ -50,44 +62,36 @@
 
             </footer>
           </div>
-        </div>
+        </div> <!-- end modal -->
 
         <!-- dataTables -->
         <table id="event" class="display">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>Student ID</th>
+              <th>Name</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
+              <th>Student ID</th>
               <th>Actions</th>
             </tr>
           </tfoot>
           <tbody>
             <?php
               require 'inc/db.inc.php';
-              $sql = "SELECT * FROM sbo.events;";
+              $sql = "SELECT student_id, concat(last_name, ', ' , first_name) as name FROM sbo.student;";
               $result = mysqli_query($conn, $sql);
               $resultCheck = mysqli_num_rows($result);
 
               if ($resultCheck > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                  $dateEvent = date('M d Y', strtotime($row['start_date']));
-                  echo '
-                    <tr>
-                      <td><a href="eventdetails.php?id='. $row['event_id'] . '">'. $row['title'].'</a></td>
-                      <td>'. $dateEvent .'</td>
-                      <td>'. $row['description'].'</td>
-                      <td><a href="eventdetails.php?id='.
-                        $row['event_id'] .'">Edit</a></td>
-                    </tr>';
+                  //$dateEvent = date('M d Y', strtotime($row['start_date']));
+                  echo '<tr>';
+                  echo '<td><a href="#">'. $row['student_id'].'</a></td>';
+                  echo '<td>'. $row['name'] .'</td>';
+                  echo '</tr>';
                 }
               }
             ?>

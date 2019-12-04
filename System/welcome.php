@@ -1,6 +1,6 @@
     <ul>
         <?php
-          $sql = "SELECT * FROM sbo.event";
+          $sql = "SELECT * FROM sbo.events";
           $result = mysqli_query($conn, $sql);
           $resultCheck = mysqli_num_rows($result);
 
