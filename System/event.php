@@ -18,7 +18,13 @@
       <div class="content-wrapper">
         <h1>Events List</h1>
         <!--w3 modal -->
-        <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black float-right">Add New Event</button>
+        <?php
+          if($_SESSION['type'] == (1 || 2)) {
+            echo `<button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black float-right">Add New Event</button>`;
+          }
+
+        ?>
+
         <div id="id01" class="w3-modal">
           <div class="w3-modal-content w3-card-4">
             <header class="w3-container w3-teal">

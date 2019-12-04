@@ -1,6 +1,5 @@
 <?php
   require 'inc/db.inc.php';
-  session_start();
 ?>
 
 <!DOCTYPE html>

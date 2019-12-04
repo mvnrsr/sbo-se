@@ -1,3 +1,7 @@
+<?php
+  session_start();
+?>
+
 <div class="col side-nav">
   <ul>
     <li>
