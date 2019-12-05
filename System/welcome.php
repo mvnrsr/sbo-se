@@ -1,17 +1,6 @@
-<?php
-  session_start();
-  require 'inc/db.inc.php';
-?>
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
     <ul>
         <?php
-          $sql = "SELECT * FROM sbo.event";
+          $sql = "SELECT * FROM sbo.events";
           $result = mysqli_query($conn, $sql);
           $resultCheck = mysqli_num_rows($result);
 
@@ -27,5 +16,3 @@
 
         ?>
     </ul>
-  </body>
-</html>

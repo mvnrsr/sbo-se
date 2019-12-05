@@ -6,6 +6,14 @@
     $username = $_POST['username'];
     $password = $_POST['pw'];
     $pwRepeat = $_POST['pw-repeat'];
+    $registered = TRUE;
+
+    $check = "SELECT stud_id FROM sbo.user WHERE stud_id = '$id';";
+    $result = mysqli_query($conn, $check);
+    $checkID = mysqli_num_rows($result);
+    if ($checkID > 0) {
+      $registered = FALSE;
+    }
 
     if (empty($username) || empty($password) || empty($pwRepeat)) {
       header("Location: ../login.php?error=emptyfields&username=".$username);
@@ -16,6 +24,9 @@
     }
     elseif ($password !== $pwRepeat) {
       header("Location: ../login.php?error=pwcheck&username=".$username);
+      exit();
+    } elseif ($registered != TRUE) {
+      header("Location: ../login.php?error=idtaken");
       exit();
     }
     else {

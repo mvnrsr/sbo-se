@@ -1,22 +1,17 @@
+<?php
+  session_start();
+?>
+
 <div class="col side-nav">
   <ul>
     <li>
-      <a href="#">Events</a>
-      <ul>
-        <li><a href="#">Events List</a></li>
-        <li><a href="#">Manage Events</a></li>
-      </ul>
+      <a href="event.php">Events</a>
     </li>
     <li>
-      <a href="#">Students</a>
-      <ul>
-        <li><a href="#">Students List</a></li>
-        <li><a href="#">Manage Students</a></li>
-        <li><a href="#">Students Registration</a></li>
-      </ul>
+      <a href="students.php">Students</a>
     </li>
     <li>
-      <a href="#">Link 3</a>
+      <a href="inc/logout.inc.php">Log Out</a>
     </li>
   </ul>
 </div>

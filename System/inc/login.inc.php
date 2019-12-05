@@ -33,7 +33,9 @@ if (isset($_POST['login'])) {
           //info
           $_SESSION['uid'] = $row['stud_id'];
           $_SESSION['uname'] = $row['username'];
-          $_SESSION['logged-in'] = TRUE;
+          $_SESSION['logged_in'] = TRUE;
+          //root = 1, officer = 2, student = 3;
+          $_SESSION['utype'] = $row['type_id'];
 
           header("Location: ../index.php?login=success&id=".$id);
           exit();
