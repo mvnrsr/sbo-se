@@ -35,9 +35,10 @@
           if ($resultCheck > 0) {
             header("Location: ../login.php?error=usertaken");
           } else { //end check result
-            $sql = "INSERT INTO sbo.user(stud_id, username, password, type_id) VALUES(?, ?, ?, '1')";
+            $sql = "INSERT INTO sbo.user(stud_id, username, password, type_id) VALUES(?, ?, ?, 1)";
             $stmt = mysqli_stmt_init($conn);
             if (!mysqli_stmt_prepare($stmt, $sql)) {
+              //echo mysqli_error($conn);
               header("Location: ../login.php?error=sqlerror");
               exit();
             } else {
