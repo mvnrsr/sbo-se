@@ -17,7 +17,20 @@
         ?>
       </div>
       <div class="content-wrapper">
-        <h1><?php  echo $id; ?></h1>
+        <!-- breadcrumb here -->
+        <ul class="breadcrumb">
+         <li><a href="students.php">Students List</a></li>
+         <li>(Student ID) - Profile</li>
+       </ul> <!-- end breadcrumb -->
+
+        <h1>Last Name, First Name MI</h1>
+        <h2><?php  echo $id; ?></h2>
+        <hr>
+        Info here
+        <hr>
+        <h1>Emergency Section here</h1>
+        <hr>
+        Info here
       </div>
 
     </div>

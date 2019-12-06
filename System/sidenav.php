@@ -18,6 +18,9 @@
       <a href="students.php">Students</a>
     </li>
     <li>
+      <a href="profile.php">Student Profile</a>
+    </li>
+    <li>
       <a href="inc/logout.inc.php">Log Out</a>
     </li>
   </ul>
