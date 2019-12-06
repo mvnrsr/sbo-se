@@ -15,8 +15,6 @@ body {
   margin-top: 0px;
   margin-right: 0px;
   max-width: 100%;
-  background-color: #ECF0F1;
-
 }
 
 button {
@@ -66,9 +64,22 @@ li label + * {
 
 .sidenav {
   width: 20%;
-  background-color: #EAFAF1;
+  border-right: 2px solid #C9C9C9;
   height: auto;
   padding-left: 2.5em;
+}
+
+.sidenav ul li {
+  font-size: 20px;
+  padding-bottom: 1em;
+}
+
+.sidenav ul li a:hover {
+  color: white;
+}
+
+hr {
+  width: 80%;
 }
 
 .float-right {

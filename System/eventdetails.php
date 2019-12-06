@@ -39,14 +39,24 @@ include 'inc/db.inc.php';
       <div class="content-wrapper">
         <ul class="breadcrumb">
          <li><a href="welcome.php">Events</a></li>
-         <li><a href="events.php">Events List</a></li>
+         <li><a href="event.php">Events List</a></li>
          <li>CIT Night</li>
         </ul>
 
+        <!--
+          Modal buttons must be outside a form
+          to avoid the modal from auto closing.
+        -->
+        <!-- edit event modal button-->
+        <button onclick="document.getElementById('eventModal').style.display='block'" class="float-right">Edit Event</button>
+        <!-- add new attendance modal button-->
+        <button onclick="document.getElementById('attendanceModal').style.display='block'" class="float-right">Add Attendance</button>
 
-        <form class="w3-container" action="inc/edit.inc.php" method="post">
+        <form class="w3-container" action="inc/insert.inc.php" method="post">
           <h2><?php echo $title; ?></h2>
               <input type="text" name="id" value="<?php echo $evId;?>" readonly hidden>
+
+
 
               <div class="w3-row">
                 <div class="w3-col" style="width:20%">
@@ -70,92 +80,157 @@ include 'inc/db.inc.php';
                 </div>
               </div>
 
-              <div class="w3-row">
-                <div class="w3-col">
-                  <button class="w3-btn w3-blue" type="submit" name="edit-event">Save Changes</button>
-                </div>
-              </div>
-
           </ul>
         </form>
         <hr>
         <h2>Attendance</h2>
-        <!-- add new attendance button-->
-        <button onclick="document.getElementById('id01').style.display='block'" class="float-right">Add Attendance</button>
-
+        <!--
+          Problem:
+            Current solution is limited to one attendance day only.
+          Suggested solution:
+            1. Create a select option where page will display table
+                according to date.
+            2. Generate tabs according to the number of dates
+            3. Make a list of attendance dates and redirect user
+                to another page.
+            4. Turn the relationship between Attendance and Event 1:1.
+                This solution will require revision to the schema where
+                event is tied to only one attendance.
+        -->
+        <h1>AM</h1>
         <!-- attendance table -->
-        <table id="listofevents" class="display">
-          <thead>
-            <th>Attendance ID</th>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Sign In</th>
-            <th>Sign out</th>
-          </thead>
-          <tbody>
             <?php
-              require 'inc/db.inc.php';
-              $sql = "SELECT sa.att_id, concat(s.last_name, ', ', s.first_name) as name, a.date, a.type, sa.sign_in, sa.sign_out FROM sbo.student_attendance sa
-	               join student s on sa.student_id = s.student_id
-                 join events e on sa.event_id = e.event_id
-                 join attendance a on sa.att_id = a.attendance_id
-              where sa.event_id = $evId;";
+              $am = "morning";
+              $sql = "SELECT
+                        concat(s.last_name, ', ', s.first_name) as name,
+                        concat(se.year, se.section) as year_section,
+                        sa.sign_in,
+                        sa.sign_out,
+                        a.type
+                      FROM sbo.student_attendance sa
+                        join student s
+                          on sa.student_id = s.student_id
+                        join events e
+                          on sa.event_id = e.event_id
+                        join attendance a
+                          on sa.att_id = a.attendance_id
+                        join student_section ss
+                          on s.student_id = ss.student_id
+                        join section se
+                          on se.section_id = ss.section_id
+                      WHERE sa.event_id = $evId AND a.type = '$am';";
               $result = mysqli_query($conn, $sql);
               $resultCheck = mysqli_num_rows($result);
+
+
+              echo '<table id="morning" class="display">';
+              echo '<thead>';
+              echo '<th>Name</th>';
+              echo '<th>Section</th>';
+              echo '<th>Sign In</th>';
+              echo '<th>Sign Out</th>';
+              echo '</thead>';
+              echo '<tbody>';
 
               if ($resultCheck > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                   echo '<tr>';
-                  echo '<td>' .$row['att_id']. '</td>';
                   echo '<td>' .$row['name']. '</td>';
-                  echo '<td>' .$row['date']. '</td>';
-                  echo '<td>' .$row['type']. '</td>';
+                  echo '<td>' .$row['year_section']. '</td>';
                   echo '<td>' .$row['sign_in']. '</td>';
                   echo '<td>' .$row['sign_out']. '</td>';
                   echo '</tr>';
                 }
               }
-            ?>
-          </tbody>
-        </table> <!-- attendance table -->
 
-        <div id="id01" class="w3-modal">
+              echo '</tbody>';
+              echo '</table>';
+            ?>
+            <hr>
+            <h1>PM</h1>
+            <?php
+              $pm = "afternoon";
+              $sql = "SELECT
+                        concat(s.last_name, ', ', s.first_name) as name,
+                        concat(se.year, se.section) as year_section,
+                        sa.sign_in,
+                        sa.sign_out,
+                        a.type
+                      FROM sbo.student_attendance sa
+                        join student s
+                          on sa.student_id = s.student_id
+                        join events e
+                          on sa.event_id = e.event_id
+                        join attendance a
+                          on sa.att_id = a.attendance_id
+                        join student_section ss
+                          on s.student_id = ss.student_id
+                        join section se
+                          on se.section_id = ss.section_id
+                      WHERE sa.event_id = $evId AND a.type = '$pm';";
+              $result = mysqli_query($conn, $sql);
+              $resultCheck = mysqli_num_rows($result);
+
+
+              echo '<table id="afternoon" class="display">';
+              echo '<thead>';
+              echo '<th>Name</th>';
+              echo '<th>Section</th>';
+              echo '<th>Sign In</th>';
+              echo '<th>Sign Out</th>';
+              echo '</thead>';
+              echo '<tbody>';
+
+              if ($resultCheck > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                  echo '<tr>';
+                  echo '<td>' .$row['name']. '</td>';
+                  echo '<td>' .$row['year_section']. '</td>';
+                  echo '<td>' .$row['sign_in']. '</td>';
+                  echo '<td>' .$row['sign_out']. '</td>';
+                  echo '</tr>';
+                }
+              }
+
+              echo '</tbody>';
+              echo '</table>';
+            ?>
+
+ <!-- attendance table -->
+
+        <!--
+          Edit Event modal
+          Depending on the decision, the schema may still be subject
+          to change and remove the Start and End date of an Event.
+
+        -->
+        <div id="eventModal" class="w3-modal">
           <div class="w3-modal-content w3-card-4">
             <header class="w3-container w3-teal">
-              <span onclick="document.getElementById('id01').style.display='none'"
+              <span onclick="document.getElementById('eventModal').style.display='none'"
               class="w3-button w3-display-topright">&times;</span>
-              <h2>New Student Registration</h2>
+              <h2>Edit Event</h2>
             </header>
             <div class="w3-container">
-              <form class="w3-container" action="inc/insert.inc.php" method="post">
+              <form class="w3-container" action="inc/edit.inc.php" method="post">
                 <p>
-                  <label>Student ID</label></p>
-                  <input type="text" class="w3-input" name="studID" required>
-
+                  <label>Event Title</label></p>
+                  <input type="text" class="w3-input" name="title" required>
                 </p>
                 <p>
-                  <label>Last Name</label></p>
-                  <input type="text" class="w3-input" name="lname" required>
+                  <label>Description</label></p>
+                  <input type="text" class="w3-input" name="desc" required>
                 </p>
                 <p>
-                  <label>First Name</label></p>
-                  <input type="text" class="w3-input" name="fname" required>
+                  <label>Start Date</label>
+                  <input type="date" name="start">
                 </p>
                 <p>
-                  <label>Middle Name</label></p>
-                  <input type="text" class="w3-input" name="mname" required>
+                  <label>End Date</label>
+                  <input type="date" name="end">
                 </p>
                 <p>
-                  <label>Address</label></p>
-                  <input type="text" class="w3-input" name="address" required>
-                </p>
-                <p>
-                  <label>Contact Number</label></p>
-                  <input type="text" class="w3-input" name="num" required>
-                </p>
-                <p>
-                  <button class="w3-btn" type="submit" name="saveStud">Save</button>
+                  <button class="w3-btn" type="submit" name="edit-event">Save</button>
                 </p>
               </form>
             </div>
@@ -163,9 +238,54 @@ include 'inc/db.inc.php';
 
             </footer>
           </div>
-        </div> <!-- end modal -->
+        </div> <!-- Edit Event modal -->
 
-      </div>
+        <!-- Add Attendance modal -->
+        <div id="attendanceModal" class="w3-modal">
+          <div class="w3-modal-content w3-card-4">
+            <header class="w3-container w3-teal">
+              <span onclick="document.getElementById('attendanceModal').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <h2>Add Attendance</h2>
+            </header>
+            <div class="w3-container">
+              <form class="w3-container" action="" method="post">
+                <p>
+                  <label>Type</label></p>
+                  <select name="type">
+                    <option value="AM" selected>AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </p>
+                <!--
+                  Alternative solution
+                    1. Create a script where the system generates
+                        limited selection of attendance period according
+                        to the attendance type (i.e. if the officer selects
+                        AM for the type, the system will only limit the option
+                        to blablablablabla)
+                    2. Or hard code it.
+                -->
+                <p>
+                  <label>Start Time</label></p>
+                  <input type="time" name="start" class="w3-input">
+                </p>
+                <p>
+                  <label>End Time</label></p>
+                  <input type="time" name="end" class="w3-input">
+                </p>
+                <p>
+                  <button class="w3-btn" type="submit" name="add-attendance">Save</button>
+                </p>
+              </form>
+            </div>
+            <footer class="w3-container w3-teal">
+
+            </footer>
+          </div>
+        </div> <!-- Add Attendance modal -->
+
+      </div> <!-- end content wrapper WARNING: do not add content beyond this part. -->
     </div> <!-- end main wrapper -->
 
 
@@ -173,7 +293,11 @@ include 'inc/db.inc.php';
    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
    <script>
      $(document).ready( function () {
-       $('#listofevents').DataTable();
+       $('#morning').DataTable();
+     } );
+
+     $(document).ready( function () {
+       $('#afternoon').DataTable();
      } );
    </script>
 

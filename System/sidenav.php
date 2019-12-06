@@ -8,9 +8,10 @@
     }
 ?>
 
-<div class="col side-nav">
+<div class="col ">
   <ul>
     <li>Hello, <?php echo $_SESSION['uname']; ?></li>
+    <hr>
     <li>
       <a href="event.php">Events</a>
     </li>
