@@ -19,3 +19,8 @@
       echo $id;
     }
   }
+
+  //edit emergency contact
+  if (isset($_POST['edit-contact'])) {
+
+  }
