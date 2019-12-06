@@ -1,6 +1,5 @@
 <?php
-  session_start();
-  require 'inc/db.inc.php';
+include 'inc/db.inc.php';
   $evId = $_GET['id'];
   $sql = "SELECT * FROM sbo.events WHERE event_id = $evId;";
   $result = mysqli_query($conn, $sql);
@@ -18,10 +17,6 @@
     echo 'No results found.<br>';
   }
 
-  if (isset($_SESSION['logged_in']) != TRUE) {
-    header("Location: login.php?error=invader");
-    exit();
-  }
 
  ?>
 
@@ -42,38 +37,45 @@
       </div>
 
       <div class="content-wrapper">
-        <h2>Event Detail</h2>
-        <form class="" action="inc/edit.inc.php" method="post">
-          <ul>
-            <input type="text" name="id" value="<?php echo $evId;?>" readonly>
-            <li>
-              <label for="">Title</label>
-              <input type="text" name="title" value="<?php echo $title; ?>" required >
-            </li>
-            <li>
-              <label for="">Date Created</label>
-              <input type="text" name="create" value="<?php echo $dateCr; ?>" readonly >
-            </li>
-            <li>
-              <label for="">Start Date</label>
-              <input type="text" name="start" value="<?php echo $dateSt; ?>">
-            </li>
-            <li>
-              <label for="">End Date</label>
-              <input type="text" name="end" value="<?php echo $dateEnd; ?>">
-            </li>
-            <li>
-              <label for="">Description</label>
-              <textarea name="event-desc" rows="8" cols="80" required >
-                <?php
-                  echo $desc;
-                ?>
-              </textarea>
-            </li>
+        <ul class="breadcrumb">
+         <li><a href="welcome.php">Events</a></li>
+         <li><a href="events.php">Events List</a></li>
+         <li>CIT Night</li>
+        </ul>
 
-            <li>
-              <button type="submit" name="edit-event">Save Changes</button>
-            </li>
+
+        <form class="w3-container" action="inc/edit.inc.php" method="post">
+          <h2><?php echo $title; ?></h2>
+              <input type="text" name="id" value="<?php echo $evId;?>" readonly hidden>
+
+              <div class="w3-row">
+                <div class="w3-col" style="width:20%">
+                  <label class="w3-large">Start Date</label>
+                  <input class="w3-input" type="text" name="start" value="<?php echo $dateSt; ?>">
+                </div>
+                <div class="w3-col" style="width:20%">
+                  <p></p>
+                </div>
+                <div class="w3-col" style="width:20%">
+                  <label class="w3-large">End Date</label>
+                  <input class="w3-input" type="text" name="end" value="<?php echo $dateEnd; ?>">
+                </div>
+              </div>
+
+              <div class="w3-row">
+                <div class="w3-col" style="width:60%">
+                  <label class="w3-large">Description</label>
+                  <p><?php echo $desc; ?></p>
+
+                </div>
+              </div>
+
+              <div class="w3-row">
+                <div class="w3-col">
+                  <button class="w3-btn w3-blue" type="submit" name="edit-event">Save Changes</button>
+                </div>
+              </div>
+
           </ul>
         </form>
         <hr>

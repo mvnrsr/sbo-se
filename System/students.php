@@ -17,6 +17,25 @@
       </div>
       <div class="content-wrapper">
         <h1>Students List</h1>
+        <form class="w3-container" action="index.html" method="post">
+          <div class="w3-row">
+            <div class="w3-col">
+              <select class="">
+                <option selected disabled>School Year</option>
+                <option value="2019-2020">2019-2020</option>
+              </select>
+            </div>
+            <div class="w3-col">
+              <select class="">
+                <option selected disabled>Term</option>
+                <option value="First Semester">1st Semester</option>
+              </select>
+            </div>
+            </div>
+        </form>
+
+
+
         <!--w3 modal -->
         <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black float-right">Register New Student</button>
         <div id="id01" class="w3-modal">
@@ -70,18 +89,24 @@
             <tr>
               <th>Student ID</th>
               <th>Name</th>
+              <th>Year and Section</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
               <th>Student ID</th>
-              <th>Actions</th>
+              <th>Name</th>
+              <th>Year and Section</th>
             </tr>
           </tfoot>
           <tbody>
             <?php
-              require 'inc/db.inc.php';
-              $sql = "SELECT student_id, concat(last_name, ', ' , first_name) as name FROM sbo.student;";
+              $sql = "SELECT st.student_id, concat(st.last_name, ', ' , st.first_name) as name, concat(se.year, se.section) as yr_sect
+	FROM sbo.student st
+    join sbo.student_section ss
+		on st.student_id = ss.student_id
+    join sbo.section se
+		on ss.section_id = se.section_id";
               $result = mysqli_query($conn, $sql);
               $resultCheck = mysqli_num_rows($result);
 
@@ -89,8 +114,9 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                   //$dateEvent = date('M d Y', strtotime($row['start_date']));
                   echo '<tr>';
-                  echo '<td><a href="#">'. $row['student_id'].'</a></td>';
+                  echo '<td><a href="profile.php?id=">'. urlencode($row['student_id']).'</a></td>';
                   echo '<td>'. $row['name'] .'</td>';
+                  echo '<td>'. $row['yr_sect'] . '</td>';
                   echo '</tr>';
                 }
               }

@@ -19,8 +19,10 @@
         <h1>Events List</h1>
         <!--w3 modal -->
         <?php
-          if($_SESSION['type'] == (1 || 2)) {
-            echo `<button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black float-right">Add New Event</button>`;
+        $modalId = "'id01'";
+        $display = "'block'";
+          if($_SESSION['utype'] != 3) {
+            echo '<button onclick="document.getElementById('. $modalId .').style.display='. $display .'" class="w3-button w3-black float-right">Add New Event</button>';
           }
 
         ?>
@@ -78,7 +80,6 @@
           </tfoot>
           <tbody>
             <?php
-              require 'inc/db.inc.php';
               $sql = "SELECT * FROM sbo.events;";
               $result = mysqli_query($conn, $sql);
               $resultCheck = mysqli_num_rows($result);

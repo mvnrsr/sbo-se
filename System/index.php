@@ -1,7 +1,3 @@
-<?php
-  require 'inc/db.inc.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
