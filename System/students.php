@@ -37,7 +37,15 @@
 
 
         <!--w3 modal -->
-        <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black float-right">Register New Student</button>
+        <?php
+        $modalId = "'id01'";
+        $display = "'block'";
+        //checks if the user's type is not student 
+          if($_SESSION['utype'] != 3) {
+            echo '<button onclick="document.getElementById('. $modalId .').style.display='. $display .'" class="w3-button w3-black float-right">Register New Student</button>';
+          }
+        ?>
+
         <div id="id01" class="w3-modal">
           <div class="w3-modal-content w3-card-4">
             <header class="w3-container w3-teal">

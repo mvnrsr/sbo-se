@@ -1,7 +1,3 @@
-<?php
-  $id = '171-0192-2';
-?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -15,10 +11,13 @@
   <body>
     <div class="main-wrapper">
       <div class="sidenav">
-        <?php include 'sidenav.php'; ?>
+        <?php
+          include 'sidenav.php';
+          $id = $_SESSION['uid'];
+        ?>
       </div>
       <div class="content-wrapper">
-        <h1><?php echo $id; ?></h1>
+        <h1><?php  echo $id; ?></h1>
       </div>
 
     </div>
