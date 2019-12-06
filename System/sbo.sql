@@ -26,6 +26,8 @@ CREATE TABLE `attendance` (
   `attendance_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
   PRIMARY KEY (`attendance_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -36,7 +38,7 @@ CREATE TABLE `attendance` (
 
 LOCK TABLES `attendance` WRITE;
 /*!40000 ALTER TABLE `attendance` DISABLE KEYS */;
-INSERT INTO `attendance` VALUES (1,'2019-12-04','morning'),(2,'2019-12-05','morning'),(3,'2019-12-18','afternoon'),(4,'2019-12-17','morning'),(5,'2019-12-09','morning');
+INSERT INTO `attendance` VALUES (1,'2019-12-04','morning',NULL,NULL),(2,'2019-12-05','morning',NULL,NULL),(3,'2019-12-18','afternoon',NULL,NULL),(4,'2019-12-17','morning',NULL,NULL),(5,'2019-12-09','morning',NULL,NULL);
 /*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,13 +106,13 @@ DROP TABLE IF EXISTS `section`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `section` (
-  `section_id` int(11) NOT NULL,
+  `section_id` int(11) NOT NULL AUTO_INCREMENT,
   `year` tinyint(4) DEFAULT NULL,
   `section` tinytext,
   `sy` tinytext,
   `term` tinytext,
   PRIMARY KEY (`section_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,6 +121,7 @@ CREATE TABLE `section` (
 
 LOCK TABLES `section` WRITE;
 /*!40000 ALTER TABLE `section` DISABLE KEYS */;
+INSERT INTO `section` VALUES (1,3,'A','2019-2020','First Semester');
 /*!40000 ALTER TABLE `section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,33 +187,6 @@ INSERT INTO `student_attendance` VALUES (1,'171-0192-2',2,'07:30:00','11:30:00')
 UNLOCK TABLES;
 
 --
--- Table structure for table `student_emergency`
---
-
-DROP TABLE IF EXISTS `student_emergency`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `student_emergency` (
-  `student_id` varchar(10) NOT NULL,
-  `em_id` int(11) NOT NULL,
-  PRIMARY KEY (`student_id`,`em_id`),
-  KEY `se_em_idx` (`em_id`),
-  CONSTRAINT `se_em` FOREIGN KEY (`em_id`) REFERENCES `emergency` (`em_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `se_stud` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `student_emergency`
---
-
-LOCK TABLES `student_emergency` WRITE;
-/*!40000 ALTER TABLE `student_emergency` DISABLE KEYS */;
-INSERT INTO `student_emergency` VALUES ('171-0192-2',1);
-/*!40000 ALTER TABLE `student_emergency` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `student_section`
 --
 
@@ -231,6 +207,7 @@ CREATE TABLE `student_section` (
 
 LOCK TABLES `student_section` WRITE;
 /*!40000 ALTER TABLE `student_section` DISABLE KEYS */;
+INSERT INTO `student_section` VALUES ('171-0192-2',1);
 /*!40000 ALTER TABLE `student_section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -297,4 +274,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-05  4:14:25
+-- Dump completed on 2019-12-07  3:04:04
