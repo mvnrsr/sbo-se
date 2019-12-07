@@ -97,103 +97,141 @@ include 'inc/db.inc.php';
                 This solution will require revision to the schema where
                 event is tied to only one attendance.
         -->
+
+        <!--
+          This form fetches the dates of attendances that will be used
+          to query AM/PM attendance based on a date
+        -->
+        <form class="" action="" method="post">
+          <select class="" name="attDate">
+            <?php
+              $sql = "SELECT DISTINCT a.date FROM sbo.student_attendance sa
+                      	JOIN sbo.attendance a
+                      		ON sa.att_id = a.attendance_id
+                      	JOIN sbo.events e
+                      		ON sa.event_id = e.event_id
+                      	where sa.event_id = $evId;";
+              $result = mysqli_query($conn, $sql);
+              $resultCheck = mysqli_num_rows($result);
+              if ($resultCheck > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                  echo '<option value="' . $row['date'];
+                  echo '" selected>';
+                  echo $row['date'];
+                  echo '</option>';
+                }
+              }
+            ?>
+          </select>
+          <button type="submit" name="selectAttDate">Select Date</button>
+        </form>
         <h1>AM</h1>
         <!-- attendance table -->
             <?php
-              $am = "morning";
-              $sql = "SELECT
-                        concat(s.last_name, ', ', s.first_name) as name,
-                        concat(se.year, se.section) as year_section,
-                        sa.sign_in,
-                        sa.sign_out,
-                        a.type
-                      FROM sbo.student_attendance sa
-                        join student s
-                          on sa.student_id = s.student_id
-                        join events e
-                          on sa.event_id = e.event_id
-                        join attendance a
-                          on sa.att_id = a.attendance_id
-                        join student_section ss
-                          on s.student_id = ss.student_id
-                        join section se
-                          on se.section_id = ss.section_id
-                      WHERE sa.event_id = $evId AND a.type = '$am';";
-              $result = mysqli_query($conn, $sql);
-              $resultCheck = mysqli_num_rows($result);
+              if (isset($_POST['selectAttDate'])) {
+              //  header("eventdetails.php?id=$evId");
+                $am = "morning";
+                $date = $_POST['attDate'];
+                $sql = "SELECT
+                          concat(s.last_name, ', ', s.first_name) as name,
+                          concat(se.year, se.section) as year_section,
+                          sa.sign_in,
+                          sa.sign_out,
+                          a.type
+                        FROM sbo.student_attendance sa
+                          join student s
+                            on sa.student_id = s.student_id
+                          join events e
+                            on sa.event_id = e.event_id
+                          join attendance a
+                            on sa.att_id = a.attendance_id
+                          join student_section ss
+                            on s.student_id = ss.student_id
+                          join section se
+                            on se.section_id = ss.section_id
+                        WHERE sa.event_id = $evId AND a.type = '$am' AND a.date = '$date';";
+                $result = mysqli_query($conn, $sql);
+                $resultCheck = mysqli_num_rows($result);
 
 
-              echo '<table id="morning" class="display">';
-              echo '<thead>';
-              echo '<th>Name</th>';
-              echo '<th>Section</th>';
-              echo '<th>Sign In</th>';
-              echo '<th>Sign Out</th>';
-              echo '</thead>';
-              echo '<tbody>';
+                echo '<table id="morning" class="display">';
+                echo '<thead>';
+                echo '<th>Name</th>';
+                echo '<th>Section</th>';
+                echo '<th>Sign In</th>';
+                echo '<th>Sign Out</th>';
+                echo '</thead>';
+                echo '<tbody>';
 
-              if ($resultCheck > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                  echo '<tr>';
-                  echo '<td>' .$row['name']. '</td>';
-                  echo '<td>' .$row['year_section']. '</td>';
-                  echo '<td>' .$row['sign_in']. '</td>';
-                  echo '<td>' .$row['sign_out']. '</td>';
-                  echo '</tr>';
+                if ($resultCheck > 0) {
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<tr>';
+                    echo '<td>' .$row['name']. '</td>';
+                    echo '<td>' .$row['year_section']. '</td>';
+                    echo '<td>' .$row['sign_in']. '</td>';
+                    echo '<td>' .$row['sign_out']. '</td>';
+                    echo '</tr>';
+                  }
                 }
+
+                echo '</tbody>';
+                echo '</table>';
+
+
               }
 
-              echo '</tbody>';
-              echo '</table>';
             ?>
             <hr>
             <h1>PM</h1>
             <?php
-              $pm = "afternoon";
-              $sql = "SELECT
-                        concat(s.last_name, ', ', s.first_name) as name,
-                        concat(se.year, se.section) as year_section,
-                        sa.sign_in,
-                        sa.sign_out,
-                        a.type
-                      FROM sbo.student_attendance sa
-                        join student s
-                          on sa.student_id = s.student_id
-                        join events e
-                          on sa.event_id = e.event_id
-                        join attendance a
-                          on sa.att_id = a.attendance_id
-                        join student_section ss
-                          on s.student_id = ss.student_id
-                        join section se
-                          on se.section_id = ss.section_id
-                      WHERE sa.event_id = $evId AND a.type = '$pm';";
-              $result = mysqli_query($conn, $sql);
-              $resultCheck = mysqli_num_rows($result);
+              if (isset($_POST['selectAttDate'])) {
+                $pm = "afternoon";
+                $sql = "SELECT
+                          concat(s.last_name, ', ', s.first_name) as name,
+                          concat(se.year, se.section) as year_section,
+                          sa.sign_in,
+                          sa.sign_out,
+                          a.type
+                        FROM sbo.student_attendance sa
+                          join student s
+                            on sa.student_id = s.student_id
+                          join events e
+                            on sa.event_id = e.event_id
+                          join attendance a
+                            on sa.att_id = a.attendance_id
+                          join student_section ss
+                            on s.student_id = ss.student_id
+                          join section se
+                            on se.section_id = ss.section_id
+                        WHERE sa.event_id = $evId AND a.type = '$pm' AND a.date = '$date';";
+                $result = mysqli_query($conn, $sql);
+                $resultCheck = mysqli_num_rows($result);
 
 
-              echo '<table id="afternoon" class="display">';
-              echo '<thead>';
-              echo '<th>Name</th>';
-              echo '<th>Section</th>';
-              echo '<th>Sign In</th>';
-              echo '<th>Sign Out</th>';
-              echo '</thead>';
-              echo '<tbody>';
+                echo '<table id="afternoon" class="display">';
+                echo '<thead>';
+                echo '<th>Name</th>';
+                echo '<th>Section</th>';
+                echo '<th>Sign In</th>';
+                echo '<th>Sign Out</th>';
+                echo '</thead>';
+                echo '<tbody>';
 
-              if ($resultCheck > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                  echo '<tr>';
-                  echo '<td>' .$row['name']. '</td>';
-                  echo '<td>' .$row['year_section']. '</td>';
-                  echo '<td>' .$row['sign_in']. '</td>';
-                  echo '<td>' .$row['sign_out']. '</td>';
-                  echo '</tr>';
+                if ($resultCheck > 0) {
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<tr>';
+                    echo '<td>' .$row['name']. '</td>';
+                    echo '<td>' .$row['year_section']. '</td>';
+                    echo '<td>' .$row['sign_in']. '</td>';
+                    echo '<td>' .$row['sign_out']. '</td>';
+                    echo '</tr>';
+                  }
                 }
+
+                echo '</tbody>';
+                echo '</table>';
               }
 
-              echo '</tbody>';
-              echo '</table>';
             ?>
 
  <!-- attendance table -->
