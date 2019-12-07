@@ -84,13 +84,41 @@ session_start();
   if (isset($_POST['add-attendance'])) {
     $date = $_POST['date'];
     $type = $_POST['type'];
+    $evId = $_POST['eventId'];
+    $start = $_POST['start'];
+    $end = $_POST['end'];
 
-    $sql = "INSERT INTO sbo.attendance(date, type) VALUES('$date', '$type');";
-
+    $sql = "INSERT INTO sbo.attendance(date, type, start, end, event_id) VALUES('$date', '$type', '$start', '$end', $evId);";
 
     if (!mysqli_query($conn, $sql)) {
-
+      echo mysqli_error($conn);
     } else {
+      //get last inserted id from sbo.attendance
+      $attId = mysqli_insert_id($conn);
+
+      //fetch student IDs
+      $sql = "SELECT * FROM sbo.student;";
+      $list = mysqli_query($conn, $sql);
+      $listCheck = mysqli_num_rows($list);
+
+      //store student IDs into array
+      if ($listCheck > 0) {
+        while ($row = mysqli_fetch_assoc($list)) {
+          $students[] = $row['student_id'];
+        }
+
+
+      } //end result check
+      for ($i=0; $i < count($students); $i++) {
+        $student_id = $students[$i];
+        $sql2 = "INSERT INTO sbo.student_attendance(att_id, student_id) VALUES($attId, '$student_id');";
+
+        mysqli_query($conn, $sql2);
+
+      } //end loop
+
+      header("Location: ../eventdetails.php?id=$evId");
+      /*
       $sql2 = "SELECT * FROM sbo.student;";
       $list = mysqli_query($conn, $sql2);
       $listCheck = mysqli_num_rows($list);
@@ -102,7 +130,7 @@ session_start();
         for ($i=0; $i < sizeof($student_list); $i++ ) {
           $sql = "INSERT INTO sbo.student_attendance()";
         }
-      }
+      } */
 
     }
 

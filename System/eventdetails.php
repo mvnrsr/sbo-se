@@ -17,6 +17,7 @@ include 'inc/db.inc.php';
     echo 'No results found.<br>';
   }
 
+  $today = date('Y-m-d');
 
  ?>
 
@@ -292,12 +293,16 @@ include 'inc/db.inc.php';
               <h2>Add Attendance</h2>
             </header>
             <div class="w3-container">
-              <form class="w3-container" action="" method="post">
+              <form class="w3-container" action="inc/insert.inc.php" method="post">
                 <p>
-                  <label>Type</label></p>
+                  <input type="text" name="eventId" value="<?php echo $evId; ?>" hidden>
+                  <input type="date" name="date">
+                </p>
+                <p>
+                  <label>Select Attendance Type</label>
                   <select name="type">
-                    <option value="AM" selected>AM</option>
-                    <option value="PM">PM</option>
+                    <option value="morning">AM</option>
+                    <option value="afternoon">PM</option>
                   </select>
                 </p>
                 <!--
