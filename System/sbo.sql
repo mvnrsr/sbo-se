@@ -28,7 +28,10 @@ CREATE TABLE `attendance` (
   `type` varchar(45) DEFAULT NULL,
   `start` time DEFAULT NULL,
   `end` time DEFAULT NULL,
-  PRIMARY KEY (`attendance_id`)
+  `event_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`attendance_id`),
+  KEY `att_event_id_FK_idx` (`event_id`),
+  CONSTRAINT `att_event_id_FK` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE SET NULL ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,7 +41,7 @@ CREATE TABLE `attendance` (
 
 LOCK TABLES `attendance` WRITE;
 /*!40000 ALTER TABLE `attendance` DISABLE KEYS */;
-INSERT INTO `attendance` VALUES (1,'2019-12-04','morning',NULL,NULL),(2,'2019-12-05','morning',NULL,NULL),(3,'2019-12-18','afternoon',NULL,NULL),(4,'2019-12-17','morning',NULL,NULL),(5,'2019-12-09','morning',NULL,NULL);
+INSERT INTO `attendance` VALUES (1,'2019-12-04','morning',NULL,NULL,2),(2,'2019-12-04','afternoon',NULL,NULL,2),(3,'2019-12-05','afternoon',NULL,NULL,2),(4,'2019-12-17','morning',NULL,NULL,NULL),(5,'2019-12-09','morning',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +115,7 @@ CREATE TABLE `section` (
   `sy` tinytext,
   `term` tinytext,
   PRIMARY KEY (`section_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +124,7 @@ CREATE TABLE `section` (
 
 LOCK TABLES `section` WRITE;
 /*!40000 ALTER TABLE `section` DISABLE KEYS */;
-INSERT INTO `section` VALUES (1,3,'A','2019-2020','First Semester');
+INSERT INTO `section` VALUES (1,3,'A','2019-2020','First Semester'),(2,2,'A','2019-2020','First Semester');
 /*!40000 ALTER TABLE `section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +142,10 @@ CREATE TABLE `student` (
   `middle_name` varchar(45) DEFAULT NULL,
   `address` varchar(45) DEFAULT NULL,
   `contact_num` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`student_id`)
+  `em_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`student_id`),
+  KEY `st_em_id_fk_idx` (`em_id`),
+  CONSTRAINT `st_em_id_fk` FOREIGN KEY (`em_id`) REFERENCES `emergency` (`em_id`) ON DELETE SET NULL ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -149,7 +155,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES ('131-4578-1','Khan','Gengis','Mongol','Mongol','9081239874'),('151-1547-4','de la Cruz','Juan','Garcia','San Fernando, La Union','09123941234'),('171-0115-2','Francisco','Rica','Oafericua','San Fernando City','09121117780'),('171-0135-2','dabatos','christian','balahay','san francisco','09957695761'),('171-0192-2','Rosario','Mivien','Alvar','400 Cantingan, Quinavite, Bauang, La Union','09219698035');
+INSERT INTO `student` VALUES ('131-4578-1','Khan','Gengis','Mongol','Mongol','9081239874',NULL),('142-1324-1','Ruiz','Ameerah','Garcia','87 Bonifcio Drive, Victoria Village ','63-2-9847589',NULL),('151-1547-4','de la Cruz','Juan','Garcia','San Fernando, La Union','09123941234',NULL),('171-0115-2','Francisco','Rica','Oafericua','San Fernando City','09121117780',NULL),('171-0135-2','dabatos','christian','balahay','san francisco','09957695761',NULL),('171-0192-2','Rosario','Mivien','Alvar','400 Cantingan, Quinavite, Bauang, La Union','09219698035',NULL);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,15 +169,12 @@ DROP TABLE IF EXISTS `student_attendance`;
 CREATE TABLE `student_attendance` (
   `att_id` int(11) NOT NULL,
   `student_id` varchar(10) NOT NULL,
-  `event_id` int(11) NOT NULL,
   `sign_in` time DEFAULT NULL,
   `sign_out` time DEFAULT NULL,
-  PRIMARY KEY (`att_id`,`student_id`,`event_id`),
+  PRIMARY KEY (`att_id`,`student_id`),
   KEY `sa_student_fk_idx` (`student_id`),
   KEY `sa_attendance_fk_idx` (`att_id`),
-  KEY `sa_event_fk_idx` (`event_id`),
   CONSTRAINT `sa_attendance_fk` FOREIGN KEY (`att_id`) REFERENCES `attendance` (`attendance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sa_event_fk` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `sa_student_fk` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -182,7 +185,7 @@ CREATE TABLE `student_attendance` (
 
 LOCK TABLES `student_attendance` WRITE;
 /*!40000 ALTER TABLE `student_attendance` DISABLE KEYS */;
-INSERT INTO `student_attendance` VALUES (1,'171-0192-2',2,'07:30:00','11:30:00');
+INSERT INTO `student_attendance` VALUES (1,'171-0192-2','07:30:00','11:30:00'),(2,'151-1547-4','13:30:00','17:00:00'),(2,'171-0192-2','13:00:00','17:00:00'),(3,'131-4578-1','13:30:00','17:00:00');
 /*!40000 ALTER TABLE `student_attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,7 +210,7 @@ CREATE TABLE `student_section` (
 
 LOCK TABLES `student_section` WRITE;
 /*!40000 ALTER TABLE `student_section` DISABLE KEYS */;
-INSERT INTO `student_section` VALUES ('171-0192-2',1);
+INSERT INTO `student_section` VALUES ('131-4578-1',2),('142-1324-1',1),('151-1547-4',2),('164-1547-2',1),('171-0115-2',1),('171-0135-2',1),('171-0192-2',1);
 /*!40000 ALTER TABLE `student_section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,4 +277,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-07  3:04:04
+-- Dump completed on 2019-12-07 23:43:34

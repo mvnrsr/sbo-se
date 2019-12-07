@@ -109,14 +109,14 @@ include 'inc/db.inc.php';
                       	JOIN sbo.attendance a
                       		ON sa.att_id = a.attendance_id
                       	JOIN sbo.events e
-                      		ON sa.event_id = e.event_id
-                      	where sa.event_id = $evId;";
+                      		ON a.event_id = e.event_id
+                      	where a.event_id = $evId;";
               $result = mysqli_query($conn, $sql);
               $resultCheck = mysqli_num_rows($result);
               if ($resultCheck > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                   echo '<option value="' . $row['date'];
-                  echo '" selected>';
+                  echo '">';
                   echo $row['date'];
                   echo '</option>';
                 }
@@ -137,19 +137,22 @@ include 'inc/db.inc.php';
                           concat(se.year, se.section) as year_section,
                           sa.sign_in,
                           sa.sign_out,
-                          a.type
+                          a.type,
+                          a.event_id
+
                         FROM sbo.student_attendance sa
                           join student s
                             on sa.student_id = s.student_id
-                          join events e
-                            on sa.event_id = e.event_id
-                          join attendance a
+						              join attendance a
                             on sa.att_id = a.attendance_id
+                          join events e
+                            on a.event_id = e.event_id
                           join student_section ss
                             on s.student_id = ss.student_id
                           join section se
                             on se.section_id = ss.section_id
-                        WHERE sa.event_id = $evId AND a.type = '$am' AND a.date = '$date';";
+                        WHERE a.event_id = $evId AND a.type = '$am' AND a.date='$date';";
+
                 $result = mysqli_query($conn, $sql);
                 $resultCheck = mysqli_num_rows($result);
 
@@ -191,19 +194,21 @@ include 'inc/db.inc.php';
                           concat(se.year, se.section) as year_section,
                           sa.sign_in,
                           sa.sign_out,
-                          a.type
+                          a.type,
+                          a.event_id
+
                         FROM sbo.student_attendance sa
                           join student s
                             on sa.student_id = s.student_id
-                          join events e
-                            on sa.event_id = e.event_id
-                          join attendance a
+						              join attendance a
                             on sa.att_id = a.attendance_id
+                          join events e
+                            on a.event_id = e.event_id
                           join student_section ss
                             on s.student_id = ss.student_id
                           join section se
                             on se.section_id = ss.section_id
-                        WHERE sa.event_id = $evId AND a.type = '$pm' AND a.date = '$date';";
+                        WHERE a.event_id = $evId AND a.type = '$pm' AND a.date='$date';";
                 $result = mysqli_query($conn, $sql);
                 $resultCheck = mysqli_num_rows($result);
 

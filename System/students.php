@@ -40,7 +40,7 @@
         <?php
         $modalId = "'id01'";
         $display = "'block'";
-        //checks if the user's type is not student 
+        //checks if the user's type is not student
           if($_SESSION['utype'] != 3) {
             echo '<button onclick="document.getElementById('. $modalId .').style.display='. $display .'" class="w3-button w3-black float-right">Register New Student</button>';
           }
@@ -58,7 +58,25 @@
                 <p>
                   <label>Student ID</label></p>
                   <input type="text" class="w3-input" name="studID" required>
+                </p>
+                <p>
+                  <label>Section</label>
+                  <select class="w3-input" name="sect_id">
+                    <?php
+                      $sql = "SELECT section_id, concat(year, section) as yr_sect FROM sbo.section;";
+                      $result = mysqli_query($conn, $sql);
+                      $resultCheck = mysqli_num_rows($result);
 
+                      if ($resultCheck > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                          echo '<option value="' . $row['section_id'];
+                          echo '">';
+                          echo $row['yr_sect'];
+                          echo "</option>";
+                        }
+                      }
+                    ?>
+                  </select>
                 </p>
                 <p>
                   <label>Last Name</label></p>
@@ -110,11 +128,11 @@
           <tbody>
             <?php
               $sql = "SELECT st.student_id, concat(st.last_name, ', ' , st.first_name) as name, concat(se.year, se.section) as yr_sect
-	FROM sbo.student st
-    join sbo.student_section ss
-		on st.student_id = ss.student_id
-    join sbo.section se
-		on ss.section_id = se.section_id";
+                      	FROM sbo.student st
+                          join sbo.student_section ss
+                      		on st.student_id = ss.student_id
+                          join sbo.section se
+                      		on ss.section_id = se.section_id";
               $result = mysqli_query($conn, $sql);
               $resultCheck = mysqli_num_rows($result);
 

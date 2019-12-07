@@ -6,20 +6,29 @@ session_start();
   //insert student
   if (isset($_POST['saveStud'])) {
     $id = $_POST['studID'];
+    $sectId = $_POST['sect_id'];
     $last = $_POST['lname'];
     $first = $_POST['fname'];
     $mid = $_POST['mname'];
     $address = $_POST['address'];
     $num = $_POST['num'];
 
-    $sql = "INSERT INTO sbo.student(student_id, last_name, first_name, middle_name,
-      address, contact_num) VALUES('$id', '$last', '$first', '$mid', '$address', '$num');";
+    $sql = "INSERT INTO sbo.student(student_id,
+              last_name,
+              first_name,
+              middle_name,
+              address,
+              contact_num)
+            VALUES('$id', '$last', '$first', '$mid', '$address', '$num');";
+    $sql = "INSERT INTO sbo.student_section(student_id,
+              section_id)
+            VALUES('$id', $sectId);";
 
-    if (!mysqli_query($conn, $sql)) {
+    if (!mysqli_multi_query($conn, $sql)) {
       echo (mysqli_error($conn));
       header("Location: ../students.php?registration=error");
     } else {
-      header("Location: ../index.php?registration=successful");
+      header("Location: ../students.php?registration=successful");
       exit();
     }
   }
@@ -78,6 +87,7 @@ session_start();
 
     $sql = "INSERT INTO sbo.attendance(date, type) VALUES('$date', '$type');";
 
+
     if (!mysqli_query($conn, $sql)) {
 
     } else {
@@ -88,6 +98,9 @@ session_start();
       if ($listCheck > 0) {
         while ($row = mysqli_fetch_assoc($list)) {
           $student_list[$row['student_id']] = $row;
+        }
+        for ($i=0; $i < sizeof($student_list); $i++ ) {
+          $sql = "INSERT INTO sbo.student_attendance()";
         }
       }
 
