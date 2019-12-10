@@ -34,7 +34,12 @@ include 'inc/db.inc.php';
   <body>
     <div class="main-wrapper">
       <div class="sidenav">
-        <?php include 'sidenav.php'; ?>
+        <?php
+          include 'sidenav.php';
+          date_default_timezone_set('Asia/Singapore');
+          $currentTime = strtotime(date('H:i'));
+
+        ?>
       </div>
 
       <div class="content-wrapper">
@@ -49,42 +54,28 @@ include 'inc/db.inc.php';
           to avoid the modal from auto closing.
         -->
         <!-- edit event modal button-->
-        <button onclick="document.getElementById('eventModal').style.display='block'" class="float-right">Edit Event</button>
-        <!-- add new attendance modal button-->
-        <button onclick="document.getElementById('attendanceModal').style.display='block'" class="float-right">Add Attendance</button>
+        <button onclick="document.getElementById('eventModal').style.display='block'" class="float-right w3-button w3-blue">Edit Event</button>
 
-        <form class="w3-container" action="inc/insert.inc.php" method="post">
-          <h2><?php echo $title; ?></h2>
-              <input type="text" name="id" value="<?php echo $evId;?>" readonly hidden>
+        <h2><?php echo $title . $currentTime; ?></h2>
+        <table class="w3-table w3-bordered w3-hoverable">
+          <tr>
+            <td>Start of Event</td>
+            <td><?php echo $dateSt; ?></td>
+          </tr>
+          <tr>
+            <td>End of Event</td>
+            <td><?php echo $dateEnd; ?></td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td><?php echo $desc; ?></td>
+          </tr>
+        </table>
 
-
-
-              <div class="w3-row">
-                <div class="w3-col" style="width:20%">
-                  <label class="w3-large">Start Date</label>
-                  <input class="w3-input" type="text" name="start" value="<?php echo $dateSt; ?>">
-                </div>
-                <div class="w3-col" style="width:20%">
-                  <p></p>
-                </div>
-                <div class="w3-col" style="width:20%">
-                  <label class="w3-large">End Date</label>
-                  <input class="w3-input" type="text" name="end" value="<?php echo $dateEnd; ?>">
-                </div>
-              </div>
-
-              <div class="w3-row">
-                <div class="w3-col" style="width:60%">
-                  <label class="w3-large">Description</label>
-                  <p><?php echo $desc; ?></p>
-
-                </div>
-              </div>
-
-          </ul>
-        </form>
         <hr>
         <h2>Attendance</h2>
+        <!-- add new attendance modal button-->
+        <button onclick="document.getElementById('attendanceModal').style.display='block'" class="float-right w3-button w3-blue">Add Attendance</button>
         <!--
           Problem:
             Current solution is limited to one attendance day only.
@@ -105,6 +96,7 @@ include 'inc/db.inc.php';
         -->
         <form class="" action="" method="post">
           <select class="" name="attDate">
+            <option selected>Select Date</option>
             <?php
               $sql = "SELECT DISTINCT a.date FROM sbo.student_attendance sa
                       	JOIN sbo.attendance a
@@ -126,9 +118,18 @@ include 'inc/db.inc.php';
           </select>
           <button type="submit" name="selectAttDate">Select Date</button>
         </form>
+        <!-- edit attendance modal button-->
+        <button onclick="document.getElementById('amModal').style.display='block'" class="float-right w3-button w3-blue">Edit</button>
+
+        <!-- Attendance
+          //todo
+          - error handling when query does not return anything
+
+        -->
         <h1>AM</h1>
         <!-- attendance table -->
             <?php
+
               if (isset($_POST['selectAttDate'])) {
               //  header("eventdetails.php?id=$evId");
                 $am = "morning";
@@ -139,7 +140,11 @@ include 'inc/db.inc.php';
                           sa.sign_in,
                           sa.sign_out,
                           a.type,
-                          a.event_id
+                          a.event_id,
+                          a.in_start,
+                          a.in_end,
+                          a.out_start,
+                          a.out_end
 
                         FROM sbo.student_attendance sa
                           join student s
@@ -148,10 +153,8 @@ include 'inc/db.inc.php';
                             on sa.att_id = a.attendance_id
                           join events e
                             on a.event_id = e.event_id
-                          join student_section ss
-                            on s.student_id = ss.student_id
                           join section se
-                            on se.section_id = ss.section_id
+                            on se.section_id = s.section_id
                         WHERE a.event_id = $evId AND a.type = '$am' AND a.date='$date';";
 
                 $result = mysqli_query($conn, $sql);
@@ -169,11 +172,32 @@ include 'inc/db.inc.php';
 
                 if ($resultCheck > 0) {
                   while ($row = mysqli_fetch_assoc($result)) {
+                    $in_start_am = strtotime($row['in_start']);
+                    $in_end_am = strtotime($row['in_end']);
+                    $out_start_am = strtotime($row['out_start']);
+                    $out_end_am = strtotime($row['out_end']);
                     echo '<tr>';
                     echo '<td>' .$row['name']. '</td>';
                     echo '<td>' .$row['year_section']. '</td>';
-                    echo '<td>' .$row['sign_in']. '</td>';
-                    echo '<td>' .$row['sign_out']. '</td>';
+                    //check if student has signed in
+                    if (($row['sign_in'] == NULL) && (($currentTime > $in_start_am) && ($currentTime < $in_end_am))) {
+                      echo '<td>Sign In</td>';
+                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                      // code...
+                    }
+                    else {
+                      echo '<td>Absent</td>';
+                    }
+
+                    //check if student has signed in
+                    if (($row['sign_out'] == NULL) && (($currentTime > $out_start_am) && ($currentTime < $out_end_am))) {
+                      echo '<td>Sign Out</td>';
+                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                      // code...
+                    }
+                    else {
+                      echo '<td>Absent</td>';
+                    }
                     echo '</tr>';
                   }
                 }
@@ -182,6 +206,8 @@ include 'inc/db.inc.php';
                 echo '</table>';
 
 
+              } else {
+                echo 'No attendance available.';
               }
 
             ?>
@@ -196,7 +222,11 @@ include 'inc/db.inc.php';
                           sa.sign_in,
                           sa.sign_out,
                           a.type,
-                          a.event_id
+                          a.event_id,
+                          a.in_start,
+                          a.in_end,
+                          a.out_start,
+                          a.out_end
 
                         FROM sbo.student_attendance sa
                           join student s
@@ -205,10 +235,8 @@ include 'inc/db.inc.php';
                             on sa.att_id = a.attendance_id
                           join events e
                             on a.event_id = e.event_id
-                          join student_section ss
-                            on s.student_id = ss.student_id
                           join section se
-                            on se.section_id = ss.section_id
+                            on se.section_id = s.section_id
                         WHERE a.event_id = $evId AND a.type = '$pm' AND a.date='$date';";
                 $result = mysqli_query($conn, $sql);
                 $resultCheck = mysqli_num_rows($result);
@@ -225,18 +253,42 @@ include 'inc/db.inc.php';
 
                 if ($resultCheck > 0) {
                   while ($row = mysqli_fetch_assoc($result)) {
+                    $in_start_pm = strtotime($row['in_start']);
+                    $in_end_pm = strtotime($row['in_end']);
+                    $out_start_pm = strtotime($row['out_start']);
+                    $out_end_pm = strtotime($row['out_end']);
                     echo '<tr>';
                     echo '<td>' .$row['name']. '</td>';
                     echo '<td>' .$row['year_section']. '</td>';
-                    echo '<td>' .$row['sign_in']. '</td>';
-                    echo '<td>' .$row['sign_out']. '</td>';
+                    //check if student has signed in
+                    if (($row['sign_in'] == NULL) && (($currentTime > $in_start_pm) && ($currentTime < $in_end_pm))) {
+                      echo '<td>Sign In</td>';
+                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                      // code...
+                    }
+                    else {
+                      echo '<td>Absent</td>';
+                    }
+
+                    //check if student has signed in
+                    if (($row['sign_out'] == NULL) && (($currentTime > $out_start_pm) && ($currentTime < $out_end_pm))) {
+                      echo '<td>Sign Out</td>';
+                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                      // code...
+                    }
+                    else {
+                      echo '<td>Absent</td>';
+                    }
                     echo '</tr>';
                   }
                 }
 
                 echo '</tbody>';
                 echo '</table>';
+              } else {
+                echo 'No attendance available.';
               }
+
 
             ?>
 
@@ -257,6 +309,7 @@ include 'inc/db.inc.php';
             </header>
             <div class="w3-container">
               <form class="w3-container" action="inc/edit.inc.php" method="post">
+                <input type="text" name="id" value="<?php echo $evId; ?>">
                 <p>
                   <label>Event Title</label></p>
                   <input type="text" class="w3-input" name="title" required>
@@ -314,6 +367,46 @@ include 'inc/db.inc.php';
                         to blablablablabla)
                     2. Or hard code it.
                 -->
+                <p>
+                  <label>Start Time</label></p>
+                  <input type="time" name="start" class="w3-input">
+                </p>
+                <p>
+                  <label>End Time</label></p>
+                  <input type="time" name="end" class="w3-input">
+                </p>
+                <p>
+                  <button class="w3-btn" type="submit" name="add-attendance">Save</button>
+                </p>
+              </form>
+            </div>
+            <footer class="w3-container w3-teal">
+
+            </footer>
+          </div>
+        </div> <!-- Add Attendance modal -->
+
+        <!-- Add Attendance modal -->
+        <div id="amModal" class="w3-modal">
+          <div class="w3-modal-content w3-card-4">
+            <header class="w3-container w3-teal">
+              <span onclick="document.getElementById('amModal').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <h2>Edit Attendance - AM</h2>
+            </header>
+            <div class="w3-container">
+              <form class="w3-container" action="inc/edit.inc.php" method="post">
+                <p>
+                  <input type="text" name="eventId" value="<?php echo $evId; ?>" hidden>
+                  <input type="date" name="date">
+                </p>
+                <p>
+                  <label>Select Attendance Type</label>
+                  <select name="type">
+                    <option value="morning">AM</option>
+                    <option value="afternoon">PM</option>
+                  </select>
+                </p>
                 <p>
                   <label>Start Time</label></p>
                   <input type="time" name="start" class="w3-input">

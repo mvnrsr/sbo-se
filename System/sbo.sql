@@ -26,13 +26,15 @@ CREATE TABLE `attendance` (
   `attendance_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
-  `start` time DEFAULT NULL,
-  `end` time DEFAULT NULL,
+  `in_start` time DEFAULT NULL,
+  `in_end` time DEFAULT NULL,
+  `out_start` time DEFAULT NULL,
+  `out_end` time DEFAULT NULL,
   `event_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`attendance_id`),
   KEY `att_event_id_FK_idx` (`event_id`),
   CONSTRAINT `att_event_id_FK` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +43,7 @@ CREATE TABLE `attendance` (
 
 LOCK TABLES `attendance` WRITE;
 /*!40000 ALTER TABLE `attendance` DISABLE KEYS */;
-INSERT INTO `attendance` VALUES (1,'2019-12-04','morning',NULL,NULL,2),(2,'2019-12-04','afternoon',NULL,NULL,2),(3,'2019-12-05','afternoon',NULL,NULL,2),(4,'2019-12-17','morning',NULL,NULL,NULL),(5,'2019-12-09','morning',NULL,NULL,NULL);
+INSERT INTO `attendance` VALUES (1,'2019-12-11','morning','02:00:00','02:20:00','03:00:00','03:30:00',3);
 /*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +99,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (2,'CIT Night','2019-11-24','Lalatina oohlala','2019-01-01','2019-01-02'),(3,'CIT Night','2019-11-24','NULL','2019-01-01','2019-01-02'),(4,'CIT Night','2019-11-24','Lalatina oohlala','2019-01-01','2019-01-02');
+INSERT INTO `events` VALUES (2,'Overnight','2019-11-24','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus auctor dui, nec scelerisque dui aliquam eu. Aenean elementum porta sem, luctus dictum ligula blandit viverra. Quisque et ipsum fermentum, venenatis ex et, fermentum erat. Cras sit amet dignissim tellus, sit amet mattis mauris. In hac habitasse platea dictumst. Sed dui purus, pharetra eu tristique id, egestas eu lorem. Nam enim leo, malesuada et tincidunt posuere, tincidunt ut libero. Vivamus leo libero, blandit a imperdiet sed, ultricies sed mauris. Sed ut rutrum massa. Aenean porta, enim sed interdum auctor, nisi nulla finibus mi, in molestie est elit eleifend leo. Duis lacinia ullamcorper leo, vulputate semper velit sollicitudin non. Proin rutrum ex et mi pellentesque auctor. Donec sem augue, fringilla sed tristique vel, vestibulum sed tellus. Etiam eget vestibulum sapien. Aenean dictum rhoncus metus vitae fermentum. ','2019-12-18','2019-12-19'),(3,'CIT Night','2019-11-24','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus auctor dui, nec scelerisque dui aliquam eu. Aenean elementum porta sem, luctus dictum ligula blandit viverra. Quisque et ipsum fermentum, venenatis ex et, fermentum erat. Cras sit amet dignissim tellus, sit amet mattis mauris. In hac habitasse platea dictumst. Sed dui purus, pharetra eu tristique id, egestas eu lorem. Nam enim leo, malesuada et tincidunt posuere, tincidunt ut libero. Vivamus leo libero, blandit a imperdiet sed, ultricies sed mauris. Sed ut rutrum massa. Aenean porta, enim sed interdum auctor, nisi nulla finibus mi, in molestie est elit eleifend leo. Duis lacinia ullamcorper leo, vulputate semper velit sollicitudin non. Proin rutrum ex et mi pellentesque auctor. Donec sem augue, fringilla sed tristique vel, vestibulum sed tellus. Etiam eget vestibulum sapien. Aenean dictum rhoncus metus vitae fermentum. ','2019-01-01','2019-01-02'),(4,'CIT Night','2019-11-24','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus auctor dui, nec scelerisque dui aliquam eu. Aenean elementum porta sem, luctus dictum ligula blandit viverra. Quisque et ipsum fermentum, venenatis ex et, fermentum erat. Cras sit amet dignissim tellus, sit amet mattis mauris. In hac habitasse platea dictumst. Sed dui purus, pharetra eu tristique id, egestas eu lorem. Nam enim leo, malesuada et tincidunt posuere, tincidunt ut libero. Vivamus leo libero, blandit a imperdiet sed, ultricies sed mauris. Sed ut rutrum massa. Aenean porta, enim sed interdum auctor, nisi nulla finibus mi, in molestie est elit eleifend leo. Duis lacinia ullamcorper leo, vulputate semper velit sollicitudin non. Proin rutrum ex et mi pellentesque auctor. Donec sem augue, fringilla sed tristique vel, vestibulum sed tellus. Etiam eget vestibulum sapien. Aenean dictum rhoncus metus vitae fermentum. ','2019-01-01','2019-01-02');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,9 +145,12 @@ CREATE TABLE `student` (
   `address` varchar(45) DEFAULT NULL,
   `contact_num` varchar(45) DEFAULT NULL,
   `em_id` int(11) DEFAULT NULL,
+  `section_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`student_id`),
   KEY `st_em_id_fk_idx` (`em_id`),
-  CONSTRAINT `st_em_id_fk` FOREIGN KEY (`em_id`) REFERENCES `emergency` (`em_id`) ON DELETE SET NULL ON UPDATE NO ACTION
+  KEY `st_section_id_fk_idx` (`section_id`),
+  CONSTRAINT `st_em_id_fk` FOREIGN KEY (`em_id`) REFERENCES `emergency` (`em_id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `st_sect_id_FK` FOREIGN KEY (`section_id`) REFERENCES `section` (`section_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -155,7 +160,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES ('131-4578-1','Khan','Gengis','Mongol','Mongol','9081239874',NULL),('142-1324-1','Ruiz','Ameerah','Garcia','87 Bonifcio Drive, Victoria Village ','63-2-9847589',NULL),('151-1547-4','de la Cruz','Juan','Garcia','San Fernando, La Union','09123941234',NULL),('171-0115-2','Francisco','Rica','Oafericua','San Fernando City','09121117780',NULL),('171-0135-2','dabatos','christian','balahay','san francisco','09957695761',NULL),('171-0192-2','Rosario','Mivien','Alvar','400 Cantingan, Quinavite, Bauang, La Union','09219698035',NULL);
+INSERT INTO `student` VALUES ('131-4578-1','Khan','Gengis','Mongol','Mongol','9081239874',NULL,2),('142-1324-1','Ruiz','Ameerah','Garcia','87 Bonifcio Drive, Victoria Village ','63-2-9847589',NULL,2),('151-1547-4','de la Cruz','Juan','Garcia','San Fernando, La Union','09123941234',NULL,2),('171-0115-2','Francisco','Rica','Oafericua','San Fernando City','09121117780',NULL,1),('171-0135-2','dabatos','christian','balahay','san francisco','09957695761',NULL,1),('171-0192-2','Rosario','Mivien','Alvar','400 Cantingan, Quinavite, Bauang, La Union','09219698035',NULL,1);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,10 +177,9 @@ CREATE TABLE `student_attendance` (
   `sign_in` time DEFAULT NULL,
   `sign_out` time DEFAULT NULL,
   PRIMARY KEY (`att_id`,`student_id`),
-  KEY `sa_student_fk_idx` (`student_id`),
-  KEY `sa_attendance_fk_idx` (`att_id`),
-  CONSTRAINT `sa_attendance_fk` FOREIGN KEY (`att_id`) REFERENCES `attendance` (`attendance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sa_student_fk` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `sa_stud_id_FK_idx` (`student_id`),
+  CONSTRAINT `sa_att_id_FK` FOREIGN KEY (`att_id`) REFERENCES `attendance` (`attendance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `sa_stud_id_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -185,33 +189,8 @@ CREATE TABLE `student_attendance` (
 
 LOCK TABLES `student_attendance` WRITE;
 /*!40000 ALTER TABLE `student_attendance` DISABLE KEYS */;
-INSERT INTO `student_attendance` VALUES (1,'171-0192-2','07:30:00','11:30:00'),(2,'151-1547-4','13:30:00','17:00:00'),(2,'171-0192-2','13:00:00','17:00:00'),(3,'131-4578-1','13:30:00','17:00:00');
+INSERT INTO `student_attendance` VALUES (1,'131-4578-1',NULL,NULL),(1,'142-1324-1',NULL,NULL),(1,'151-1547-4',NULL,NULL),(1,'171-0115-2',NULL,NULL),(1,'171-0135-2',NULL,NULL),(1,'171-0192-2',NULL,NULL);
 /*!40000 ALTER TABLE `student_attendance` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `student_section`
---
-
-DROP TABLE IF EXISTS `student_section`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `student_section` (
-  `student_id` varchar(10) NOT NULL,
-  `section_id` int(11) NOT NULL,
-  PRIMARY KEY (`student_id`,`section_id`),
-  KEY `ss_sect_idx` (`section_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `student_section`
---
-
-LOCK TABLES `student_section` WRITE;
-/*!40000 ALTER TABLE `student_section` DISABLE KEYS */;
-INSERT INTO `student_section` VALUES ('131-4578-1',2),('142-1324-1',1),('151-1547-4',2),('164-1547-2',1),('171-0115-2',1),('171-0135-2',1),('171-0192-2',1);
-/*!40000 ALTER TABLE `student_section` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -240,7 +219,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('123','$2y$10$spBPvTs66eo85v2N3sPbme12Sll/UQtJlaQMtYYBnu8dmA61BLcRy','171-0192-2',1),('admin','$2y$10$dJkMcN6Z94Rmy5ZgAjHXb.l0ARZLLWzaLkcinWdFSXfSdDh5sRhmq','171-0192-2',1),('root','$2y$10$gU7bxCuekpEc74Rkkh0qPuPsU3u7s/cfAU9Sne8ZOo0381G3FOwf.','171-0192-2',1),('rumple','$2y$10$eI1Hy.S8Kr8Nxk8qNv/nKukO0iIkll/XXhwDfBpRMdOHDZPVTBIA.','171-0135-2',1);
+INSERT INTO `user` VALUES ('root','$2y$10$sxo/uCzoE2vXAyMR7ZdIjeSWvdZQtYKXIonPh2IX1kOHOXDoGUbNq','171-0192-2',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,7 +243,7 @@ CREATE TABLE `user_type` (
 
 LOCK TABLES `user_type` WRITE;
 /*!40000 ALTER TABLE `user_type` DISABLE KEYS */;
-INSERT INTO `user_type` VALUES (1,'root'),(2,'officer'),(3,'student');
+INSERT INTO `user_type` VALUES (1,'root'),(2,'attendance officer'),(4,'officer'),(5,'student');
 /*!40000 ALTER TABLE `user_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -277,4 +256,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-07 23:43:34
+-- Dump completed on 2019-12-11  2:27:32

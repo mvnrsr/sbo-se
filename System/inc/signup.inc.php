@@ -58,6 +58,7 @@
               mysqli_stmt_bind_param($stmt, "sss", $id, $username, $hashedPw);
               mysqli_stmt_execute($stmt);
               echo (mysqli_error($conn));
+              header("Location: ..login.php");
               exit();
 
             }

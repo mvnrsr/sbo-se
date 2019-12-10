@@ -63,7 +63,7 @@ li label + * {
 }
 
 .sidenav {
-  width: 20%;
+  min-width: 15%;
   border-right: 2px solid #C9C9C9;
   height: auto;
   padding-left: 2.5em;
@@ -78,9 +78,6 @@ li label + * {
   color: white;
 }
 
-hr {
-  width: 80%;
-}
 
 .float-right {
   float: right;

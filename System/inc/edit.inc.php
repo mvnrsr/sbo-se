@@ -4,11 +4,11 @@
   if (isset($_POST['edit-event'])) {
     $id = $_POST['id'];
     $title = $_POST['title'];
-    $desc = $_POST['event-desc'];
+    $desc = $_POST['desc'];
     $start = $_POST['start'];
     $end = $_POST['end'];
 
-    $sql = "UPDATE sbo.event
+    $sql = "UPDATE sbo.events
       SET title='$title', description='$desc', start_date='$start', end_date='$end' WHERE event_id = $id;";
 
     if ($conn->query($sql) === TRUE) {

@@ -13,9 +13,16 @@
       <div class="sidenav">
         <?php
           include 'sidenav.php';
+
         ?>
       </div>
       <div class="content-wrapper">
+        <!-- breadcrumb here -->
+        <ul class="breadcrumb">
+         <li><a href="index.php">Home</a></li>
+         <li>Student List</li>
+       </ul> <!-- end breadcrumb -->
+
         <h1>Students List</h1>
         <form class="w3-container" action="index.html" method="post">
           <div class="w3-row">
@@ -127,12 +134,13 @@
           </tfoot>
           <tbody>
             <?php
-              $sql = "SELECT st.student_id, concat(st.last_name, ', ' , st.first_name) as name, concat(se.year, se.section) as yr_sect
-                      	FROM sbo.student st
-                          join sbo.student_section ss
-                      		on st.student_id = ss.student_id
-                          join sbo.section se
-                      		on ss.section_id = se.section_id";
+              $sql = "SELECT
+	                      s.student_id,
+                        concat(s.last_name, ', ', s.first_name) as name,
+                        CONCAT(se.year,se.section) as year_section
+                      FROM student s
+	                    join section se
+		                    on s.section_id = se.section_id";
               $result = mysqli_query($conn, $sql);
               $resultCheck = mysqli_num_rows($result);
 
@@ -140,9 +148,10 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                   //$dateEvent = date('M d Y', strtotime($row['start_date']));
                   echo '<tr>';
-                  echo '<td><a href="profile.php?id=">'. urlencode($row['student_id']).'</a></td>';
+                  echo '<td><a href="student_profile.php?id='. $row['student_id'].'">';
+                  echo $row['student_id']. '</a></td>';
                   echo '<td>'. $row['name'] .'</td>';
-                  echo '<td>'. $row['yr_sect'] . '</td>';
+                  echo '<td>'. $row['year_section'] . '</td>';
                   echo '</tr>';
                 }
               }

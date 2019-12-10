@@ -30,11 +30,12 @@ if (isset($_POST['login'])) {
         }
         else if ($pwdCheck == true) {
           session_start();
+
           //info
           $_SESSION['uid'] = $row['stud_id'];
           $_SESSION['uname'] = $row['username'];
           $_SESSION['logged_in'] = TRUE;
-          //root = 1, officer = 2, student = 3;
+          //root = 1, attendance officer = 2, officer = 3, student = 5;
           $_SESSION['utype'] = $row['type_id'];
 
           header("Location: ../index.php?login=success&id=".$id);

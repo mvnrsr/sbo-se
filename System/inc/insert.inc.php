@@ -80,13 +80,13 @@ session_start();
     }
   } //insert event
 
-  //test
+  //insert attendance, insert student attendance
   if (isset($_POST['add-attendance'])) {
     $date = $_POST['date'];
     $type = $_POST['type'];
     $evId = $_POST['eventId'];
-    $start = $_POST['start'];
-    $end = $_POST['end'];
+    $start = date('H:i', strtotime($_POST['start']));
+    $end = date('H:i', strtotime($_POST['end']));
 
     $sql = "INSERT INTO sbo.attendance(date, type, start, end, event_id) VALUES('$date', '$type', '$start', '$end', $evId);";
 

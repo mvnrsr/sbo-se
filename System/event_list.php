@@ -27,6 +27,42 @@
 
         ?>
 
+
+
+        <!-- dataTables -->
+        <table id="event" class="display">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              $sql = "SELECT * FROM sbo.events;";
+              $result = mysqli_query($conn, $sql);
+              $resultCheck = mysqli_num_rows($result);
+
+              if ($resultCheck > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                  $dateEvent = date('M d Y', strtotime($row['start_date']));
+                  echo '
+                    <tr>
+                      <td><a href="event_profile.php?id='. $row['event_id'] . '">'. $row['title'].'</a></td>
+                      <td>'. $dateEvent .'</td>
+                      <td>'. $row['description'].'</td>
+                      <td><a href="eventdetails.php?id='.
+                        $row['event_id'] .'">Edit</a></td>
+                    </tr>';
+                }
+              }
+            ?>
+          </tbody>
+        </table> <!-- dataTables -->
+
+        <!-- edit event modal -->
         <div id="id01" class="w3-modal">
           <div class="w3-modal-content w3-card-4">
             <header class="w3-container w3-teal">
@@ -58,48 +94,7 @@
 
             </footer>
           </div>
-        </div>
-
-        <!-- dataTables -->
-        <table id="event" class="display">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </tfoot>
-          <tbody>
-            <?php
-              $sql = "SELECT * FROM sbo.events;";
-              $result = mysqli_query($conn, $sql);
-              $resultCheck = mysqli_num_rows($result);
-
-              if ($resultCheck > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                  $dateEvent = date('M d Y', strtotime($row['start_date']));
-                  echo '
-                    <tr>
-                      <td><a href="eventdetails.php?id='. $row['event_id'] . '">'. $row['title'].'</a></td>
-                      <td>'. $dateEvent .'</td>
-                      <td>'. $row['description'].'</td>
-                      <td><a href="eventdetails.php?id='.
-                        $row['event_id'] .'">Edit</a></td>
-                    </tr>';
-                }
-              }
-            ?>
-          </tbody>
-        </table>
+        </div> <!-- edit event modal -->
 
       </div> <!-- end content wrapper -->
     </div> <!-- End main wrapper -->
