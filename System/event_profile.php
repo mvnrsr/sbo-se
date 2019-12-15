@@ -53,246 +53,242 @@ include 'inc/db.inc.php';
           Modal buttons must be outside a form
           to avoid the modal from auto closing.
         -->
-        <!-- edit event modal button-->
-        <button onclick="document.getElementById('eventModal').style.display='block'" class="float-right w3-button w3-blue">Edit Event</button>
 
-        <h2><?php echo $title . $currentTime; ?></h2>
-        <table class="w3-table w3-bordered w3-hoverable">
-          <tr>
-            <td>Start of Event</td>
-            <td><?php echo $dateSt; ?></td>
-          </tr>
-          <tr>
-            <td>End of Event</td>
-            <td><?php echo $dateEnd; ?></td>
-          </tr>
-          <tr>
-            <td>Description</td>
-            <td><?php echo $desc; ?></td>
-          </tr>
-        </table>
+        <div class="w3-container">
+          <h2><?php echo $title; ?></h2></td>
+          <!-- edit event modal button-->
+          <button onclick="document.getElementById('eventModal').style.display='block'" class="float-right w3-button w3-blue">Edit Event</button>
+          <table class="w3-table">
 
-        <hr>
-        <h2>Attendance</h2>
-        <!-- add new attendance modal button-->
-        <button onclick="document.getElementById('attendanceModal').style.display='block'" class="float-right w3-button w3-blue">Add Attendance</button>
-        <!--
-          Problem:
-            Current solution is limited to one attendance day only.
-          Suggested solution:
-            1. Create a select option where page will display table
-                according to date.
-            2. Generate tabs according to the number of dates
-            3. Make a list of attendance dates and redirect user
-                to another page.
-            4. Turn the relationship between Attendance and Event 1:1.
-                This solution will require revision to the schema where
-                event is tied to only one attendance.
-        -->
 
-        <!--
-          This form fetches the dates of attendances that will be used
-          to query AM/PM attendance based on a date
-        -->
-        <form class="" action="" method="post">
-          <select class="" name="attDate">
-            <option selected>Select Date</option>
-            <?php
-              $sql = "SELECT DISTINCT a.date FROM sbo.student_attendance sa
-                      	JOIN sbo.attendance a
-                      		ON sa.att_id = a.attendance_id
-                      	JOIN sbo.events e
-                      		ON a.event_id = e.event_id
-                      	where a.event_id = $evId;";
-              $result = mysqli_query($conn, $sql);
-              $resultCheck = mysqli_num_rows($result);
-              if ($resultCheck > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                  echo '<option value="' . $row['date'];
-                  echo '">';
-                  echo $row['date'];
-                  echo '</option>';
-                }
-              }
-            ?>
-          </select>
-          <button type="submit" name="selectAttDate">Select Date</button>
-        </form>
-        <!-- edit attendance modal button-->
-        <button onclick="document.getElementById('amModal').style.display='block'" class="float-right w3-button w3-blue">Edit</button>
 
-        <!-- Attendance
-          //todo
-          - error handling when query does not return anything
 
-        -->
-        <h1>AM</h1>
-        <!-- attendance table -->
-            <?php
+            <tr>
+              <td>Start of Event</td>
+              <td><?php echo $dateSt; ?></td>
+            </tr>
+            <tr>
+              <td>End of Event</td>
+              <td><?php echo $dateEnd; ?></td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td><?php echo $desc; ?></td>
+            </tr>
+          </table>
 
-              if (isset($_POST['selectAttDate'])) {
-              //  header("eventdetails.php?id=$evId");
-                $am = "morning";
-                $date = $_POST['attDate'];
-                $sql = "SELECT
-                          concat(s.last_name, ', ', s.first_name) as name,
-                          concat(se.year, se.section) as year_section,
-                          sa.sign_in,
-                          sa.sign_out,
-                          a.type,
-                          a.event_id,
-                          a.in_start,
-                          a.in_end,
-                          a.out_start,
-                          a.out_end
+          <h2>Attendance</h2>
+          <!-- add new attendance modal button-->
+          <button onclick="document.getElementById('attendanceModal').style.display='block'" class="float-right w3-button w3-blue">Add Attendance</button>
 
-                        FROM sbo.student_attendance sa
-                          join student s
-                            on sa.student_id = s.student_id
-						              join attendance a
-                            on sa.att_id = a.attendance_id
-                          join events e
-                            on a.event_id = e.event_id
-                          join section se
-                            on se.section_id = s.section_id
-                        WHERE a.event_id = $evId AND a.type = '$am' AND a.date='$date';";
-
+          <form class="" action="" method="post">
+            <select class="" name="attDate">
+              <option selected>Select Date</option>
+              <?php
+                $sql = "SELECT DISTINCT a.date FROM sbo.student_attendance sa
+                        	JOIN sbo.attendance a
+                        		ON sa.att_id = a.attendance_id
+                        	JOIN sbo.events e
+                        		ON a.event_id = e.event_id
+                        	where a.event_id = $evId;";
                 $result = mysqli_query($conn, $sql);
                 $resultCheck = mysqli_num_rows($result);
-
-
-                echo '<table id="morning" class="display">';
-                echo '<thead>';
-                echo '<th>Name</th>';
-                echo '<th>Section</th>';
-                echo '<th>Sign In</th>';
-                echo '<th>Sign Out</th>';
-                echo '</thead>';
-                echo '<tbody>';
-
                 if ($resultCheck > 0) {
                   while ($row = mysqli_fetch_assoc($result)) {
-                    $in_start_am = strtotime($row['in_start']);
-                    $in_end_am = strtotime($row['in_end']);
-                    $out_start_am = strtotime($row['out_start']);
-                    $out_end_am = strtotime($row['out_end']);
-                    echo '<tr>';
-                    echo '<td>' .$row['name']. '</td>';
-                    echo '<td>' .$row['year_section']. '</td>';
-                    //check if student has signed in
-                    if (($row['sign_in'] == NULL) && (($currentTime > $in_start_am) && ($currentTime < $in_end_am))) {
-                      echo '<td>Sign In</td>';
-                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
-                      // code...
-                    }
-                    else {
-                      echo '<td>Absent</td>';
-                    }
-
-                    //check if student has signed in
-                    if (($row['sign_out'] == NULL) && (($currentTime > $out_start_am) && ($currentTime < $out_end_am))) {
-                      echo '<td>Sign Out</td>';
-                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
-                      // code...
-                    }
-                    else {
-                      echo '<td>Absent</td>';
-                    }
-                    echo '</tr>';
+                    echo '<option value="' . $row['date'];
+                    echo '">';
+                    echo $row['date'];
+                    echo '</option>';
                   }
                 }
+              ?>
+            </select>
+            <button type="submit" name="selectAttDate">Select Date</button>
+          </form>
+          <!-- edit attendance modal button-->
+          <button onclick="document.getElementById('amModal').style.display='block'" class="float-right w3-button w3-blue">Edit</button>
 
-                echo '</tbody>';
-                echo '</table>';
+          <h1>AM</h1>
+          <!-- attendance table -->
+              <?php
+
+                if (isset($_POST['selectAttDate'])) {
+                //  header("eventdetails.php?id=$evId");
+                  $am = "morning";
+                  $date = $_POST['attDate'];
+                  $sql = "SELECT
+                            concat(s.last_name, ', ', s.first_name) as name,
+                            concat(se.year, se.section) as year_section,
+                            sa.sign_in,
+                            sa.sign_out,
+                            a.type,
+                            a.event_id,
+                            a.in_start,
+                            a.in_end,
+                            a.out_start,
+                            a.out_end,
+                            s.student_id
+
+                          FROM sbo.student_attendance sa
+                            join student s
+                              on sa.student_id = s.student_id
+  						              join attendance a
+                              on sa.att_id = a.attendance_id
+                            join events e
+                              on a.event_id = e.event_id
+                            join section se
+                              on se.section_id = s.section_id
+                          WHERE a.event_id = $evId AND a.type = '$am' AND a.date='$date';";
+
+                  $result = mysqli_query($conn, $sql);
+                  $resultCheck = mysqli_num_rows($result);
 
 
-              } else {
-                echo 'No attendance available.';
-              }
+                  echo '<table id="morning" class="display">';
+                  echo '<thead>';
+                  echo '<th>Student ID</th>';
+                  echo '<th>Name</th>';
+                  echo '<th>Section</th>';
+                  echo '<th>Sign In</th>';
+                  echo '<th>Sign Out</th>';
+                  echo '</thead>';
+                  echo '<tbody>';
 
-            ?>
-            <hr>
-            <h1>PM</h1>
-            <?php
-              if (isset($_POST['selectAttDate'])) {
-                $pm = "afternoon";
-                $sql = "SELECT
-                          concat(s.last_name, ', ', s.first_name) as name,
-                          concat(se.year, se.section) as year_section,
-                          sa.sign_in,
-                          sa.sign_out,
-                          a.type,
-                          a.event_id,
-                          a.in_start,
-                          a.in_end,
-                          a.out_start,
-                          a.out_end
+                  if ($resultCheck > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                      $in_start_am = strtotime($row['in_start']);
+                      $in_end_am = strtotime($row['in_end']);
+                      $out_start_am = strtotime($row['out_start']);
+                      $out_end_am = strtotime($row['out_end']);
+                      $sId = $row['student_id'];
+                      echo '<tr>';
+                      echo '<td>' .$sId. '</td>';
+                      echo '<td>' .$row['name']. '</td>';
+                      echo '<td>' .$row['year_section']. '</td>';
+                      //check if student has signed in
+                      if (($row['sign_in'] == NULL) && (($currentTime > $in_start_am) && ($currentTime < $in_end_am))) {
+                        echo '<td class="dt-center">';
+                        echo '<a href="inc/edit.inc.php?add='.$currentTime.'&sId='.$sId.'&eId='.$evId.'">';
+                        echo 'Sign In</a>';
+                        echo '</td>';
+                      //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                        // code...
+                      }
+                      else {
+                        echo '<td class="dt-center">Absent</td>';
+                      }
 
-                        FROM sbo.student_attendance sa
-                          join student s
-                            on sa.student_id = s.student_id
-						              join attendance a
-                            on sa.att_id = a.attendance_id
-                          join events e
-                            on a.event_id = e.event_id
-                          join section se
-                            on se.section_id = s.section_id
-                        WHERE a.event_id = $evId AND a.type = '$pm' AND a.date='$date';";
-                $result = mysqli_query($conn, $sql);
-                $resultCheck = mysqli_num_rows($result);
-
-
-                echo '<table id="afternoon" class="display">';
-                echo '<thead>';
-                echo '<th>Name</th>';
-                echo '<th>Section</th>';
-                echo '<th>Sign In</th>';
-                echo '<th>Sign Out</th>';
-                echo '</thead>';
-                echo '<tbody>';
-
-                if ($resultCheck > 0) {
-                  while ($row = mysqli_fetch_assoc($result)) {
-                    $in_start_pm = strtotime($row['in_start']);
-                    $in_end_pm = strtotime($row['in_end']);
-                    $out_start_pm = strtotime($row['out_start']);
-                    $out_end_pm = strtotime($row['out_end']);
-                    echo '<tr>';
-                    echo '<td>' .$row['name']. '</td>';
-                    echo '<td>' .$row['year_section']. '</td>';
-                    //check if student has signed in
-                    if (($row['sign_in'] == NULL) && (($currentTime > $in_start_pm) && ($currentTime < $in_end_pm))) {
-                      echo '<td>Sign In</td>';
-                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
-                      // code...
+                      //check if student has signed in
+                      if (($row['sign_out'] == NULL) && (($currentTime > $out_start_am) && ($currentTime < $out_end_am))) {
+                        echo '<td>Sign Out</td>';
+                      //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                        // code...
+                      }
+                      else {
+                        echo '<td class="dt-center">Absent</td>';
+                      }
+                      echo '</tr>';
                     }
-                    else {
-                      echo '<td>Absent</td>';
-                    }
-
-                    //check if student has signed in
-                    if (($row['sign_out'] == NULL) && (($currentTime > $out_start_pm) && ($currentTime < $out_end_pm))) {
-                      echo '<td>Sign Out</td>';
-                    //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
-                      // code...
-                    }
-                    else {
-                      echo '<td>Absent</td>';
-                    }
-                    echo '</tr>';
                   }
+
+                  echo '</tbody>';
+                  echo '</table>';
+
+
+                } else {
+                  echo 'No attendance available.';
                 }
 
-                echo '</tbody>';
-                echo '</table>';
-              } else {
-                echo 'No attendance available.';
-              }
+              ?>
+              <hr>
+              <h1>PM</h1>
+              <?php
+                if (isset($_POST['selectAttDate'])) {
+                  $pm = "afternoon";
+                  $sql = "SELECT
+                            concat(s.last_name, ', ', s.first_name) as name,
+                            concat(se.year, se.section) as year_section,
+                            sa.sign_in,
+                            sa.sign_out,
+                            a.type,
+                            a.event_id,
+                            a.in_start,
+                            a.in_end,
+                            a.out_start,
+                            a.out_end,
+                            s.student_id
+
+                          FROM sbo.student_attendance sa
+                            join student s
+                              on sa.student_id = s.student_id
+  						              join attendance a
+                              on sa.att_id = a.attendance_id
+                            join events e
+                              on a.event_id = e.event_id
+                            join section se
+                              on se.section_id = s.section_id
+                          WHERE a.event_id = $evId AND a.type = '$pm' AND a.date='$date';";
+                  $result = mysqli_query($conn, $sql);
+                  $resultCheck = mysqli_num_rows($result);
 
 
-            ?>
+                  echo '<table id="afternoon" class="display">';
+                  echo '<thead>';
+                  echo '<th>Student ID</th>';
+                  echo '<th>Name</th>';
+                  echo '<th>Section</th>';
+                  echo '<th>Sign In</th>';
+                  echo '<th>Sign Out</th>';
+                  echo '</thead>';
+                  echo '<tbody>';
 
- <!-- attendance table -->
+                  if ($resultCheck > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                      $in_start_pm = strtotime($row['in_start']);
+                      $in_end_pm = strtotime($row['in_end']);
+                      $out_start_pm = strtotime($row['out_start']);
+                      $out_end_pm = strtotime($row['out_end']);
+                      echo '<tr>';
+                      echo '<td>'.$row['student_id'].'</td>';
+                      echo '<td>' .$row['name']. '</td>';
+                      echo '<td>' .$row['year_section']. '</td>';
+                      //check if student has signed in
+                      if (($row['sign_in'] == NULL) && (($currentTime > $in_start_pm) && ($currentTime < $in_end_pm))) {
+                        echo '<td class="dt-center">Sign In</td>';
+                      //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                        // code...
+                      }
+                      else {
+                        echo '<td class="dt-center">Absent</td>';
+                      }
+
+                      //check if student has signed in
+                      if (($row['sign_out'] == NULL) && (($currentTime > $out_start_pm) && ($currentTime < $out_end_pm))) {
+                        echo '<td class="dt-center">Sign Out</td>';
+                      //} elseif (($row['sign_in'] == NULL) && ($currentTime < )) {
+                        // code...
+                      }
+                      else {
+                        echo '<td class="dt-center">Absent</td>';
+                      }
+                      echo '</tr>';
+                    }
+                  }
+
+                  echo '</tbody>';
+                  echo '</table>';
+                } else {
+                  echo 'No attendance available.';
+                }
+
+
+              ?>
+
+   <!-- attendance table -->
+
+        </div>
+
+
 
         <!--
           Edit Event modal

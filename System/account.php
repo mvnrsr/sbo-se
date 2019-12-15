@@ -13,15 +13,7 @@
       <div class="sidenav">
         <?php
           include 'sidenav.php';
-
-          if (isset($_GET['id'])) {
-            if ($_SESSION['utype'] != 5) {
-              $id = $_GET['id'];
-            }
-          } else {
-            $id = $_SESSION['uid'];
-          }
-
+          $id = $_SESSION['uid'];
           $sql = "SELECT
                       UPPER(CONCAT(s.last_name, ', ', s.first_name, ' ', LEFT(s.middle_name, 1), '.')) as name,
                       s.student_id,
@@ -35,7 +27,6 @@
                   JOIN section ss ON s.section_id = ss.section_id
                   JOIN user u ON u.stud_id = s.student_id
                   JOIN user_type ut ON u.type_id = ut.type_id
-                  JOIN emergency e ON s.em_id = e.em_id
                   WHERE student_id = '$id'";
           $result = mysqli_query($conn, $sql);
           $resultCheck = mysqli_num_rows($result);
@@ -59,27 +50,7 @@
          <li><?php echo $id; ?> - Profile</li>
        </ul> <!-- end breadcrumb -->
 
-        <h1><?php  echo $name; ?></h1>
-        <h2 class="w3-large"><?php  echo $id; ?></h2>
-        <hr> <!-- information here -->
-        <table class="w3-table w3-bordered w3-hoverable">
-          <tr>
-            <td>Section</td>
-            <td><?php echo $section; ?></td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td><?php echo  $address; ?></td>
-          </tr>
-          <tr>
-            <td>Contact Number</td>
-            <td><?php echo $num; ?></td>
-          </tr>
-        </table>
 
-        <h1>Emergency Section here</h1>
-        Info here
-      </div>
 
     </div>
 

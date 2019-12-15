@@ -43,7 +43,7 @@ CREATE TABLE `attendance` (
 
 LOCK TABLES `attendance` WRITE;
 /*!40000 ALTER TABLE `attendance` DISABLE KEYS */;
-INSERT INTO `attendance` VALUES (1,'2019-12-11','morning','02:00:00','02:20:00','03:00:00','03:30:00',3);
+INSERT INTO `attendance` VALUES (1,'2019-12-11','morning','08:30:00','09:00:00','03:00:00','03:30:00',3);
 /*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,4 +256,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-11  2:27:32
+-- Dump completed on 2019-12-11 14:07:57

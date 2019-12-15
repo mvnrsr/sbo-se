@@ -74,7 +74,7 @@ li label + * {
   padding-bottom: 1em;
 }
 
-.sidenav ul li a:hover {
+.sidenav a:hover {
   color: white;
 }
 

@@ -15,6 +15,7 @@
           </div>
 
           <div class="content-wrapper">
+            
             <ul>
                 <?php
                   $sql = "SELECT * FROM sbo.events";

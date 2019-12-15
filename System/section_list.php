@@ -28,7 +28,7 @@
       $modalId = "'id01'";
       $display = "'block'";
         if($_SESSION['utype'] == 1|2) {
-          echo '<button onclick="document.getElementById('. $modalId .').style.display='. $display .'" class="w3-button w3-blue float-right">Add New Event</button>';
+          echo '<button onclick="document.getElementById('. $modalId .').style.display='. $display .'" class="w3-button w3-blue float-right">New Section</button>';
         }
 
       ?>

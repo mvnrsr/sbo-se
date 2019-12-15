@@ -15,6 +15,11 @@
       </div>
 
       <div class="content-wrapper">
+        <!-- breadcrumb here -->
+        <ul class="breadcrumb w3-blue">
+         <li>Home</li>
+       </ul> <!-- end breadcrumb -->
+
         <ul>
             <?php
               $sql = "SELECT * FROM sbo.events";

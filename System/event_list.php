@@ -27,15 +27,13 @@
 
         ?>
 
-
-
         <!-- dataTables -->
         <table id="event" class="display">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
+              <th style="width: 150px !important">Title</th>
+              <th style="width: 100px !important">Status</th>
+              <th style="width: 70% !important">Description</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -53,7 +51,7 @@
                       <td><a href="event_profile.php?id='. $row['event_id'] . '">'. $row['title'].'</a></td>
                       <td>'. $dateEvent .'</td>
                       <td>'. $row['description'].'</td>
-                      <td><a href="eventdetails.php?id='.
+                      <td class="dt-center"><a href="eventdetails.php?id='.
                         $row['event_id'] .'">Edit</a></td>
                     </tr>';
                 }
@@ -82,8 +80,12 @@
                   <textarea class="w3-input" name="desc"></textarea>
                 </p>
                 <p>
-                  <label>Description</label></p>
-                  <input type="date" class="w3-input" name="date">
+                  <label>Start Date</label></p>
+                  <input type="date" class="w3-input" name="start">
+                </p>
+                <p>
+                  <label>Start Date</label></p>
+                  <input type="date" class="w3-input" name="end">
                 </p>
                 <p>
                   <button class="w3-btn" type="submit" name="test">Save</button>

@@ -13,24 +13,17 @@
       <div class="sidenav">
         <?php
           include 'sidenav.php';
-          if ($_SESSION['utype'] != 5) {
-            $id = $_GET['id'];
-          } else {
-            $id = $_SESSION['uid'];
-          }
         ?>
       </div>
       <div class="content-wrapper">
         <!-- breadcrumb here -->
         <ul class="breadcrumb">
-         <li><a href="students.php">Students List</a></li>
-         <li><?php echo $id; ?> - Profile</li>
-       </ul> <!-- end breadcrumb -->
+         <li><a href="index.php">Home</a></li>
+         <li>Emergency Contact</li>
+        </ul> <!-- end breadcrumb -->
 
         <h1>Emergency Contact List</h1>
       </div>
-
     </div>
-
   </body>
 </html>
